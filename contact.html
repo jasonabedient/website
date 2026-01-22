@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Jason Bedient</title>
+    <meta name="description" content="Get in touch with Jason Bedient for design opportunities.">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container flex-between">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+                Jason Bedient
+            </a>
+            <nav class="main-nav">
+                <a href="work/index.html">Work</a>
+                <a href="about.html">About</a>
+                <a href="blog/index.html">Blog</a>
+                <a href="contact.html" class="active btn-primary">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="section hero">
+            <div class="container" style="text-align: center;">
+                <h1>Let's build something great together.</h1>
+                <p class="hero-subtitle">Open for new opportunities. Whether you have a question or just want to say hi,
+                    I'll try my best to get back to you!</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container contact-container">
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-input" required placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" required
+                            placeholder="jane@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea" rows="6" required
+                            placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+
+                <div style="text-align: center; margin-top: var(--spacing-xl);">
+                    <p>Prefer email? <a href="mailto:hello@jasonbedient.design"
+                            class="link-underline">hello@jasonbedient.design</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="flex-between footer-content">
+                <div class="footer-left">
+                    <p class="footer-logo">Jason Bedient</p>
+                    <p class="copyright">&copy; 2026 Jason Bedient. All rights reserved.</p>
+                </div>
+                <div class="footer-socials">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter/X</a>
+                    <a href="#">Dribbble</a>
+                    <a href="mailto:hello@jasonbedient.design">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

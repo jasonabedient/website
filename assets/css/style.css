@@ -245,8 +245,8 @@ blockquote {
     color: var(--text-secondary);
 }
 
-.main-nav a:hover,
-.main-nav a.active {
+.main-nav a:not(.btn):hover,
+.main-nav a:not(.btn).active {
     color: var(--text-main);
 }
 
@@ -362,6 +362,8 @@ blockquote {
     max-width: 600px;
     margin-bottom: var(--spacing-md);
     font-weight: 400;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Actions */

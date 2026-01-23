@@ -362,6 +362,13 @@ blockquote {
     max-width: 600px;
     margin-bottom: var(--spacing-md);
     font-weight: 400;
+}
+
+.hero-centered {
+    text-align: center;
+}
+
+.hero-centered .hero-subtitle {
     margin-left: auto;
     margin-right: auto;
 }

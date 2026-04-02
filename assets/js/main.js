@@ -1,7 +1,49 @@
 // Main JavaScript file
 
+// Theme Initialization (Run immediately to avoid FOUC)
+(function () {
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && systemTheme)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Portfolio site loaded.');
+
+    // Inject Theme Toggle
+    const mainNav = document.querySelector('.main-nav');
+    if (mainNav) {
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'theme-toggle';
+        themeToggle.ariaLabel = 'Toggle Dark Mode';
+
+        // Icons
+        const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+        const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+
+        function updateIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            themeToggle.innerHTML = isDark ? sunIcon : moonIcon;
+        }
+
+        updateIcon();
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateIcon();
+        });
+
+        // Insert before the last item (likely the "Let's Talk" button) or at the end
+        // Inserting at the end is safest for now
+        mainNav.appendChild(themeToggle);
+    }
 
     // Inject Mobile Toggle if header exists
     const headerContainer = document.querySelector('.site-header .container');

@@ -150,11 +150,6 @@ h6 {
     color: hsl(var(--foreground));
 }
 
-h1,
-h2 {
-    font-family: var(--font-family-serif);
-}
-
 h1 {
     font-size: var(--font-size-3xl);
     letter-spacing: -0.03em;

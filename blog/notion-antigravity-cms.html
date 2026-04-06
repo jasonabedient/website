@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I Use Notion and Antigravity as My Blog CMS | Jason Bedient</title>
+    <meta name="description" content="How to use Notion as a CMS with Antigravity for seamless blog publishing.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container flex-between">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+                Jason Bedient
+            </a>
+            <nav class="main-nav">
+                <a href="../design/index.html">Design</a>
+                <a href="../leadership.html">Leadership</a>
+                <a href="../about.html">About</a>
+                <a href="index.html" class="active">Blog</a>
+                <a href="../contact.html" class="btn btn-outline">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <header class="case-study-hero">
+                <div class="container">
+                    <nav aria-label="breadcrumb" style="margin-bottom: 2rem; font-size: 0.9rem;">
+                        <a href="../index.html" style="text-decoration: none; color: var(--text-muted);">Home</a>
+                        <span style="margin: 0 0.5rem; color: var(--text-muted);">/</span>
+                        <a href="index.html" style="text-decoration: none; color: var(--text-muted);">Blog</a>
+                    </nav>
+                    <span class="date" style="display: block; margin-bottom: 1rem; color: var(--text-muted);">April 2,
+                        2026</span>
+                    <h1>How I Use Notion and Antigravity as My Blog CMS</h1>
+                    <p class="hero-subtitle">Turning a creative brain into a publishing muscle with AI-managed
+                        workflows.</p>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="article-content" style="margin-top: var(--spacing-lg);">
+                    <p>For years, I struggled to keep on top of publishing my own blog for design related content. Over
+                        the past year <strong>Notion</strong> has become my go to app for all things ideas, meetings,
+                        research etc. And then it finally clicked. If I could just write and publish from the same
+                        place, I would probably be more consistent. So I decided to try have my content system inside
+                        <strong>Notion</strong>. It’s the perfect blend of flexibility and structure, letting me write,
+                        organize, and publish without bouncing between tools.</p>
+
+                    <p>Now, I’ve leveled it up by connecting Notion to <strong>Antigravity</strong>, my AI assistant
+                        that helps with publishing automation and content management. Here’s how it all works.</p>
+
+                    <h2>Why I Chose Notion as My CMS</h2>
+                    <p>Notion isn’t designed specifically as a CMS, but that’s part of its charm. I use Notion as the
+                        <em>content hub</em> for my entire site.</p>
+
+                    <p>Each blog post lives as a Notion page with structured properties:</p>
+                    <ul>
+                        <li><strong>Title</strong> — becomes the post’s headline.</li>
+                        <li><strong>Slug</strong> — used for the final URL when exported.</li>
+                        <li><strong>Tags and Categories</strong> — used to organize content thematically.</li>
+                        <li><strong>Status</strong> — toggling between “Draft,” “Ready to Publish,” or “Live.”</li>
+                        <li><strong>Thumbnail and Banner Images</strong> — attached right in the page.</li>
+                        <li><strong>SEO and Meta Fields</strong> — stored in a side panel database.</li>
+                    </ul>
+
+                    <p>This database gives me a full editorial pipeline, replacing complex CMS dashboards with something
+                        elegant and intuitive.</p>
+
+                    <h2>Automating My Publishing Workflow with Antigravity</h2>
+                    <p>Antigravity comes into play when I’m ready to take a post live. I use it as the automation layer —
+                        it reads my Notion database, prompts me with publishing confirmations, then handles deployment.
+                    </p>
+
+                    <p>Here’s the general flow:</p>
+                    <ol>
+                        <li>I mark a post as <strong>Ready to Publish</strong> in Notion.</li>
+                        <li>Antigravity syncs and detects the change automatically.</li>
+                        <li>It formats the content using my design system tokens and Markdown rules.</li>
+                        <li>Then it pushes the output to my site’s repository on Vercel.</li>
+                        <li>Finally, Antigravity sends me a preview link and a quick summary of SEO metadata before
+                            publishing.</li>
+                    </ol>
+
+                    <p>It’s like having a co-pilot that understands my workflow and keeps everything consistent.</p>
+
+                    <h2>Why This Setup Works So Well</h2>
+                    <p>What makes this approach powerful is how <strong>natural</strong> it feels. I don’t have to think
+                        about databases, front matter, or file structures — just write. The AI handles the rest.</p>
+
+                    <p>Plus, this hybrid system gives me flexibility:</p>
+                    <ul>
+                        <li>I can draft anywhere, offline or mobile.</li>
+                        <li>I can batch edit topics or update metadata globally in Notion.</li>
+                        <li>Updates flow directly to production without me touching code.</li>
+                    </ul>
+
+                    <p>Essentially, I’ve turned my blog workflow into an <em>AI-managed design system for content.</em>
+                    </p>
+
+                    <h2>The Next Step</h2>
+                    <p>I’m experimenting with having Antigravity suggest topics and optimize posts dynamically based on
+                        reader engagement. The goal isn’t just automation — it’s creative alignment between the words I
+                        write and the systems that deliver them.</p>
+
+                    <p>Notion is my creative brain. Antigravity is my publishing muscle. Together, they keep my blog
+                        operating like a well-designed product.</p>
+
+                    <hr style="margin: var(--spacing-lg) 0; opacity: 0.2;">
+                    <p><strong>Video walkthrough:</strong> <a href="https://youtu.be/zq-_f8rr6Yw" target="_blank"
+                            rel="noopener noreferrer">Turn Notion Into Your Blog Engine | Antigravity Setup</a></p>
+                </div>
+            </div>
+
+            <nav class="case-study-nav section">
+                <div class="container flex-between">
+                    <a href="index.html" class="back-to-grid">&larr; Back to Writing</a>
+                </div>
+            </nav>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="flex-between footer-content">
+                <div class="footer-left">
+                    <p class="footer-logo">Jason Bedient</p>
+                    <p class="copyright">&copy; 2026 Jason Bedient. All rights reserved.</p>
+                </div>
+                <div class="footer-socials">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter/X</a>
+                    <a href="#">Dribbble</a>
+                    <a href="mailto:hello@jasonbedient.design">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>

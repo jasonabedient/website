@@ -97,4 +97,58 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('reveal');
         observer.observe(el);
     });
+
+    // Contact Form Handler
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            let feedbackEl = document.getElementById('form-feedback');
+            if (!feedbackEl) {
+                feedbackEl = document.createElement('div');
+                feedbackEl.id = 'form-feedback';
+                feedbackEl.style.marginTop = '1rem';
+                feedbackEl.style.textAlign = 'center';
+                feedbackEl.style.fontWeight = '500';
+                contactForm.appendChild(feedbackEl);
+            }
+            feedbackEl.style.display = 'none';
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                feedbackEl.style.display = 'block';
+                if (response.ok) {
+                    feedbackEl.textContent = 'Message sent successfully! I will get back to you soon.';
+                    feedbackEl.style.color = 'hsl(var(--primary))';
+                    contactForm.reset();
+                } else {
+                    feedbackEl.textContent = result.error || 'Failed to send message. Please try again later.';
+                    feedbackEl.style.color = 'hsl(var(--destructive))';
+                }
+            } catch (err) {
+                feedbackEl.style.display = 'block';
+                feedbackEl.textContent = 'A network error occurred. Please try again.';
+                feedbackEl.style.color = 'hsl(var(--destructive))';
+            } finally {
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
 });

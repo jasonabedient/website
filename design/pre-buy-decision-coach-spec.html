@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Buy Decision Coach — Product Spec</title>
+<meta name="description" content="A full product specification for the Pre-Buy Decision Coach — a behavioral finance web app that helps people overcome availability bias before purchasing.">
+<meta property="og:title" content="Pre-Buy Decision Coach — Product Spec">
+<meta property="og:description" content="Interactive web app spec: 5-step availability bias worksheet, $5 challenge calculator, email capture, and 30-day reflection tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN TOKENS ─── */
+:root, [data-theme="light"] {
+  --color-bg:             #f7f6f1;
+  --color-surface:        #faf9f6;
+  --color-surface-2:      #ffffff;
+  --color-surface-offset: #efeee9;
+  --color-surface-offset-2: #e8e6df;
+  --color-divider:        #dddbd4;
+  --color-border:         #d2d0c8;
+  --color-text:           #1e1c16;
+  --color-text-muted:     #6a6960;
+  --color-text-faint:     #a8a79f;
+  --color-text-inverse:   #f7f6f1;
+  --color-primary:        #1a5c4e;
+  --color-primary-hover:  #134739;
+  --color-primary-active: #0e3329;
+  --color-primary-highlight: #d0ddd9;
+  --color-accent:         #c25f1b;
+  --color-accent-hover:   #a34b12;
+  --color-accent-highlight: #f0ddd0;
+  --color-success:        #2e6b1a;
+  --color-success-highlight: #d6e8cf;
+  --color-warning:        #b55d10;
+  --color-warning-highlight: #f2e0cc;
+  --color-error:          #b03030;
+  --color-error-highlight: #f0d4d4;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+  --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 1px 2px oklch(0.2 0.02 80 / 0.06);
+  --shadow-md: 0 4px 16px oklch(0.2 0.02 80 / 0.08);
+  --shadow-lg: 0 12px 40px oklch(0.2 0.02 80 / 0.12);
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+  --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+  --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+  --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+  --text-hero: clamp(2.8rem, 0.5rem + 6vw, 6.5rem);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
+  --content-narrow: 640px;
+  --content-default: 900px;
+  --content-wide: 1160px;
+}
+
+[data-theme="dark"] {
+  --color-bg: #131210;
+  --color-surface: #1a1916;
+  --color-surface-2: #201f1c;
+  --color-surface-offset: #1d1c19;
+  --color-surface-offset-2: #252420;
+  --color-divider: #2a2925;
+  --color-border: #363430;
+  --color-text: #d4d2cc;
+  --color-text-muted: #787670;
+  --color-text-faint: #565450;
+  --color-text-inverse: #1a1916;
+  --color-primary: #4b9e8c;
+  --color-primary-hover: #2e8673;
+  --color-primary-active: #1d6d5c;
+  --color-primary-highlight: #1e3530;
+  --color-accent: #e08042;
+  --color-accent-hover: #d06830;
+  --color-accent-highlight: #3d2715;
+  --color-success: #62aa44;
+  --color-success-highlight: #1f3418;
+  --color-warning: #d07830;
+  --color-warning-highlight: #3a2510;
+  --color-error: #d05858;
+  --color-error-highlight: #3a1818;
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.25);
+  --shadow-md: 0 4px 16px oklch(0 0 0 / 0.35);
+  --shadow-lg: 0 12px 40px oklch(0 0 0 / 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #131210; --color-surface: #1a1916; --color-surface-2: #201f1c;
+    --color-surface-offset: #1d1c19; --color-surface-offset-2: #252420;
+    --color-divider: #2a2925; --color-border: #363430;
+    --color-text: #d4d2cc; --color-text-muted: #787670; --color-text-faint: #565450;
+    --color-primary: #4b9e8c; --color-primary-hover: #2e8673; --color-primary-highlight: #1e3530;
+    --color-accent: #e08042; --color-accent-highlight: #3d2715;
+  }
+}
+
+/* ─── BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: var(--space-16); }
+body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); line-height: 1.65; }
+img, svg { display: block; max-width: 100%; }
+h1,h2,h3,h4,h5 { text-wrap: balance; line-height: 1.15; }
+p, li { text-wrap: pretty; }
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+a { color: var(--color-primary); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--color-primary-hover); }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border-width:0; }
+
+/* ─── LAYOUT ─── */
+.container { max-width: var(--content-default); margin-inline: auto; padding-inline: var(--space-6); }
+.container--wide { max-width: var(--content-wide); margin-inline: auto; padding-inline: var(--space-6); }
+.container--narrow { max-width: var(--content-narrow); margin-inline: auto; padding-inline: var(--space-6); }
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: oklch(from var(--color-bg) l c h / 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08);
+  padding: var(--space-4) 0;
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.nav-logo { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-sm); font-weight: 600; letter-spacing: -0.01em; color: var(--color-text); }
+.nav-logo svg { flex-shrink: 0; }
+.nav-links { display: flex; align-items: center; gap: var(--space-6); list-style: none; }
+.nav-links a { font-size: var(--text-sm); color: var(--color-text-muted); font-weight: 500; transition: color var(--transition); }
+.nav-links a:hover { color: var(--color-text); }
+.nav-right { display: flex; align-items: center; gap: var(--space-3); }
+.theme-toggle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-full); border: 1px solid var(--color-border); color: var(--color-text-muted); transition: all var(--transition); }
+.theme-toggle:hover { background: var(--color-surface-offset); color: var(--color-text); }
+@media (max-width: 640px) { .nav-links { display: none; } }
+
+/* ─── HERO ─── */
+.hero {
+  padding: clamp(var(--space-16), 10vw, var(--space-24)) 0 clamp(var(--space-12), 8vw, var(--space-20));
+  background: var(--color-bg);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% 0%, oklch(from var(--color-primary) l c h / 0.07) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 40% at 10% 80%, oklch(from var(--color-accent) l c h / 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); }
+.tag { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.25em 0.75em; border-radius: var(--radius-full); background: var(--color-primary-highlight); color: var(--color-primary); }
+.hero-title { font-family: var(--font-display); font-size: var(--text-hero); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: var(--space-6); max-width: 14ch; }
+.hero-title em { font-style: italic; color: var(--color-primary); }
+.hero-desc { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 52ch; line-height: 1.6; margin-bottom: var(--space-10); }
+.hero-meta { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+.meta-item { display: flex; flex-direction: column; gap: var(--space-1); }
+.meta-label { font-size: var(--text-xs); color: var(--color-text-faint); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+.meta-value { font-size: var(--text-sm); color: var(--color-text); font-weight: 500; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; padding-top: clamp(var(--space-16), 10vw, var(--space-24)); }
+@media (max-width: 768px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-visual {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6);
+  font-size: var(--text-sm);
+}
+.app-bar { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-5); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-divider); }
+.app-dots { display: flex; gap: var(--space-2); }
+.dot { width: 10px; height: 10px; border-radius: var(--radius-full); }
+.dot--red { background: #ff5f57; } .dot--yellow { background: #ffbd2e; } .dot--green { background: #28c840; }
+.app-title { font-size: var(--text-xs); color: var(--color-text-muted); font-weight: 500; margin-left: auto; margin-right: auto; }
+.app-item { background: var(--color-surface-2); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-3); border: 1px solid var(--color-divider); }
+.app-item-name { font-weight: 600; font-size: var(--text-sm); color: var(--color-text); margin-bottom: var(--space-2); }
+.app-item-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.app-item-detail { font-size: var(--text-xs); color: var(--color-text-muted); }
+.badge { display: inline-flex; align-items: center; font-size: var(--text-xs); font-weight: 600; padding: 0.2em 0.6em; border-radius: var(--radius-full); }
+.badge--green { background: var(--color-success-highlight); color: var(--color-success); }
+.badge--red { background: var(--color-error-highlight); color: var(--color-error); }
+.badge--yellow { background: var(--color-warning-highlight); color: var(--color-warning); }
+.challenge-bar { margin-top: var(--space-3); }
+.challenge-label { font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-1); display: flex; justify-content: space-between; }
+.challenge-track { height: 6px; background: var(--color-surface-offset); border-radius: var(--radius-full); overflow: hidden; }
+.challenge-fill { height: 100%; border-radius: var(--radius-full); background: var(--color-primary); }
+
+/* ─── SECTION COMMONS ─── */
+.section { padding: clamp(var(--space-12), 8vw, var(--space-24)) 0; }
+.section-alt { background: var(--color-surface); border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider); }
+.section-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-faint); margin-bottom: var(--space-3); }
+.section-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: var(--space-5); }
+.section-title em { font-style: italic; color: var(--color-primary); }
+.section-desc { font-size: var(--text-base); color: var(--color-text-muted); max-width: 60ch; line-height: 1.7; margin-bottom: var(--space-10); }
+.divider { height: 1px; background: var(--color-divider); margin: var(--space-12) 0; }
+
+/* ─── PROBLEM STRIP ─── */
+.problem-strip { background: var(--color-text); color: var(--color-text-inverse); padding: var(--space-12) 0; }
+.problem-strip blockquote { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-style: italic; line-height: 1.4; max-width: 56ch; margin-inline: auto; text-align: center; opacity: 0.92; }
+.problem-strip blockquote cite { display: block; font-family: var(--font-body); font-style: normal; font-size: var(--text-sm); opacity: 0.5; margin-top: var(--space-4); letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* ─── FIVE STEPS ─── */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--space-5); }
+.step-card { background: var(--color-surface); border: 1px solid oklch(from var(--color-text) l c h / 0.07); border-radius: var(--radius-xl); padding: var(--space-6); box-shadow: var(--shadow-sm); transition: box-shadow var(--transition), transform var(--transition); }
+.step-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.step-number { font-family: var(--font-display); font-size: 2.8rem; font-weight: 400; color: var(--color-primary); line-height: 1; margin-bottom: var(--space-3); opacity: 0.8; }
+.step-title { font-weight: 600; font-size: var(--text-base); color: var(--color-text); margin-bottom: var(--space-2); }
+.step-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.65; }
+
+/* ─── FEATURES / COLUMNS ─── */
+.features-2col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10); align-items: center; }
+@media (max-width: 720px) { .features-2col { grid-template-columns: 1fr; } }
+.features-2col.reverse { direction: rtl; }
+.features-2col.reverse > * { direction: ltr; }
+.feature-visual { background: var(--color-surface); border-radius: var(--radius-xl); border: 1px solid var(--color-border); padding: var(--space-6); box-shadow: var(--shadow-md); }
+.feature-text .section-label { margin-bottom: var(--space-3); }
+.feature-text h3 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: var(--space-4); }
+.feature-text p { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; margin-bottom: var(--space-4); max-width: 50ch; }
+
+/* ─── $5 CHALLENGE CALCULATOR MOCKUP ─── */
+.calc-mockup { padding: var(--space-5); }
+.calc-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-divider); font-size: var(--text-sm); }
+.calc-row:last-child { border-bottom: none; }
+.calc-label { color: var(--color-text-muted); }
+.calc-value { font-weight: 600; color: var(--color-text); }
+.calc-result { background: var(--color-primary-highlight); border-radius: var(--radius-lg); padding: var(--space-4); margin-top: var(--space-4); display: flex; align-items: center; justify-content: space-between; }
+.calc-result-label { font-size: var(--text-sm); color: var(--color-primary); font-weight: 600; }
+.calc-result-value { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); font-style: italic; }
+
+/* ─── REWARD SECTION ─── */
+.reward-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: var(--space-4); }
+.reward-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.reward-card-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--color-accent-highlight); border-radius: var(--radius-md); margin-bottom: var(--space-3); color: var(--color-accent); }
+.reward-card h4 { font-weight: 600; font-size: var(--text-sm); margin-bottom: var(--space-2); }
+.reward-card p { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.6; }
+
+/* ─── DATA MODEL ─── */
+.schema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+@media (max-width: 640px) { .schema-grid { grid-template-columns: 1fr; } }
+.schema-table { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+.schema-table-header { background: var(--color-surface-offset); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border); font-weight: 700; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); display: flex; align-items: center; gap: var(--space-2); }
+.schema-table-header svg { color: var(--color-primary); }
+.schema-field { padding: var(--space-3) var(--space-4); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.05); display: flex; align-items: baseline; gap: var(--space-3); }
+.schema-field:last-child { border-bottom: none; }
+.schema-field-name { font-family: 'Courier New', monospace; font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; flex-shrink: 0; min-width: 120px; }
+.schema-field-type { font-size: var(--text-xs); color: var(--color-text-faint); font-style: italic; }
+.schema-field-note { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* ─── API ENDPOINTS ─── */
+.api-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.api-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); display: flex; align-items: flex-start; gap: var(--space-4); }
+.api-method { font-family: 'Courier New', monospace; font-size: var(--text-xs); font-weight: 700; padding: 0.3em 0.7em; border-radius: var(--radius-sm); flex-shrink: 0; margin-top: 1px; }
+.api-method--post { background: var(--color-success-highlight); color: var(--color-success); }
+.api-method--get { background: var(--color-primary-highlight); color: var(--color-primary); }
+.api-method--put { background: var(--color-warning-highlight); color: var(--color-warning); }
+.api-path { font-family: 'Courier New', monospace; font-size: var(--text-sm); font-weight: 600; color: var(--color-text); display: block; margin-bottom: var(--space-1); }
+.api-desc { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.5; }
+
+/* ─── DECISION LOGIC ─── */
+.decision-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+@media (max-width: 640px) { .decision-cards { grid-template-columns: 1fr; } }
+.decision-card { border-radius: var(--radius-xl); padding: var(--space-6); border: 1.5px solid; }
+.decision-card--green { border-color: var(--color-success); background: var(--color-success-highlight); }
+.decision-card--yellow { border-color: var(--color-warning); background: var(--color-warning-highlight); }
+.decision-card--red { border-color: var(--color-error); background: var(--color-error-highlight); }
+.decision-card-icon { font-size: 1.75rem; margin-bottom: var(--space-3); }
+.decision-card-label { font-weight: 700; font-size: var(--text-sm); margin-bottom: var(--space-3); }
+.decision-card--green .decision-card-label { color: var(--color-success); }
+.decision-card--yellow .decision-card-label { color: var(--color-warning); }
+.decision-card--red .decision-card-label { color: var(--color-error); }
+.decision-card ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.decision-card li { font-size: var(--text-xs); color: var(--color-text-muted); padding-left: var(--space-4); position: relative; line-height: 1.5; }
+.decision-card li::before { content: '—'; position: absolute; left: 0; color: var(--color-text-faint); }
+
+/* ─── EMAIL / CTA ─── */
+.cta-section { background: var(--color-text); color: var(--color-text-inverse); padding: clamp(var(--space-12), 8vw, var(--space-20)) 0; }
+.cta-section .section-title { color: var(--color-text-inverse); opacity: 0.95; }
+.cta-section .section-desc { color: oklch(from var(--color-text-inverse) l c h / 0.65); }
+.email-capture { background: oklch(from var(--color-text-inverse) l c h / 0.06); border: 1px solid oklch(from var(--color-text-inverse) l c h / 0.12); border-radius: var(--radius-xl); padding: var(--space-6); max-width: 480px; }
+.email-form { display: flex; flex-direction: column; gap: var(--space-3); }
+.email-input { background: oklch(from var(--color-text-inverse) l c h / 0.08); border: 1px solid oklch(from var(--color-text-inverse) l c h / 0.15); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: var(--text-sm); color: var(--color-text-inverse); width: 100%; transition: border-color var(--transition); }
+.email-input::placeholder { color: oklch(from var(--color-text-inverse) l c h / 0.35); }
+.email-input:focus { outline: none; border-color: oklch(from var(--color-text-inverse) l c h / 0.4); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); font-weight: 600; font-size: var(--text-sm); padding: var(--space-3) var(--space-6); border-radius: var(--radius-md); transition: all var(--transition); }
+.btn--primary { background: var(--color-primary); color: #fff; }
+.btn--primary:hover { background: var(--color-primary-hover); }
+.btn--inverse { background: var(--color-text-inverse); color: var(--color-text); }
+.btn--inverse:hover { background: oklch(from var(--color-text-inverse) l c h / 0.9); }
+.email-note { font-size: var(--text-xs); opacity: 0.45; margin-top: var(--space-2); }
+
+/* ─── FOOTER ─── */
+footer { padding: var(--space-12) 0; border-top: 1px solid var(--color-divider); }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+.footer-copy { font-size: var(--text-xs); color: var(--color-text-faint); }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+/* ─── PRINT / MISC ─── */
+.full-bleed { width: 100vw; margin-left: calc(-50vw + 50%); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container--wide nav-inner">
+    <a href="#" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="Pre-Buy Coach logo">
+        <rect x="2" y="2" width="24" height="24" rx="6" fill="var(--color-primary)" opacity="0.12"/>
+        <path d="M9 14 L13 18 L19 10" stroke="var(--color-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="14" cy="14" r="11" stroke="var(--color-primary)" stroke-width="1.5" fill="none"/>
+      </svg>
+      Pre-Buy Decision Coach
+    </a>
+    <ul class="nav-links">
+      <li><a href="#concept">Concept</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#data-model">Data Model</a></li>
+      <li><a href="#logic">Decision Logic</a></li>
+      <li><a href="#email">Email Capture</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container--wide hero-grid">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="tag">Product Spec</span>
+        <span class="tag" style="background:var(--color-accent-highlight);color:var(--color-accent);">Behavioral Finance</span>
+      </div>
+      <h1 class="hero-title">Pre-Buy <em>Decision</em> Coach</h1>
+      <p class="hero-desc">A behavioral finance web app that guides users through a structured 5-step worksheet to overcome availability bias — before they spend a dime.</p>
+      <div class="hero-meta">
+        <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value">Interactive Web App</span></div>
+        <div class="meta-item"><span class="meta-label">Screens</span><span class="meta-value">4 Core Views</span></div>
+        <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-value">React + Node + Postgres</span></div>
+        <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value">Open for Build</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="app-bar">
+        <div class="app-dots">
+          <div class="dot dot--red"></div><div class="dot dot--yellow"></div><div class="dot dot--green"></div>
+        </div>
+        <span class="app-title">My Decisions</span>
+      </div>
+      <!-- Sample item 1 -->
+      <div class="app-item">
+        <div class="app-item-name">Yoga Mat — $40</div>
+        <div class="app-item-row">
+          <span class="app-item-detail">Savings · Need · 100 uses</span>
+          <span class="badge badge--green">✓ Buy</span>
+        </div>
+        <div class="challenge-bar">
+          <div class="challenge-label"><span>$5 Challenge: $0.40/use</span><span style="color:var(--color-success);font-weight:600;">Passes</span></div>
+          <div class="challenge-track"><div class="challenge-fill" style="width:92%;background:var(--color-success)"></div></div>
+        </div>
+      </div>
+      <!-- Sample item 2 -->
+      <div class="app-item">
+        <div class="app-item-name">Bread Maker — $80</div>
+        <div class="app-item-row">
+          <span class="app-item-detail">Emergency Fund · Want · 8 uses</span>
+          <span class="badge badge--red">✗ Don't Buy</span>
+        </div>
+        <div class="challenge-bar">
+          <div class="challenge-label"><span>$5 Challenge: $10.00/use</span><span style="color:var(--color-error);font-weight:600;">Fails</span></div>
+          <div class="challenge-track"><div class="challenge-fill" style="width:28%;background:var(--color-error)"></div></div>
+        </div>
+      </div>
+      <!-- Sample item 3 -->
+      <div class="app-item">
+        <div class="app-item-name">Kitchen Gadget — $45</div>
+        <div class="app-item-row">
+          <span class="app-item-detail">Paycheck · Want · 10 uses</span>
+          <span class="badge badge--yellow">⚠ Reconsider</span>
+        </div>
+        <div class="challenge-bar">
+          <div class="challenge-label"><span>$5 Challenge: $4.50/use</span><span style="color:var(--color-warning);font-weight:600;">Borderline</span></div>
+          <div class="challenge-track"><div class="challenge-fill" style="width:60%;background:var(--color-warning)"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM QUOTE -->
+<div class="problem-strip">
+  <div class="container">
+    <blockquote>
+      "Just because we can picture something being used doesn't mean it deserves space in our home."
+      <cite>The Availability Bias Problem</cite>
+    </blockquote>
+  </div>
+</div>
+
+<!-- CONCEPT / 5 STEPS -->
+<section class="section" id="concept">
+  <div class="container">
+    <div class="section-label">The Framework</div>
+    <h2 class="section-title">Five steps to <em>overcome</em> availability bias</h2>
+    <p class="section-desc">Our brains quickly generate vivid scenarios of using an item — making the purchase feel necessary. These five steps slow that process down.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-number">01</div>
+        <div class="step-title">Be On the Lookout</div>
+        <div class="step-desc">Recognize when your brain is generating convincing "I'll use this" scenarios. Awareness is the first defense.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">02</div>
+        <div class="step-title">Possibility vs. Probability</div>
+        <div class="step-desc">Stop asking "Can I imagine using this?" and start asking "How likely am I to actually use this?" Rate it High, Medium, or Low.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">03</div>
+        <div class="step-title">What Would I Do Instead?</div>
+        <div class="step-desc">Name the alternative: borrow, rent, use something else, or pay for a service. There's always another way to solve the problem.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">04</div>
+        <div class="step-title">Pause Before Purchase</div>
+        <div class="step-desc">Commit to waiting 24–48 hours. The app tracks the gap between "I want it" and "I decided." Time is clarity.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">05</div>
+        <div class="step-title">Picture Life Without It</div>
+        <div class="step-desc">Imagine scenarios where you didn't buy it. What would you do with the money? The space? Your mental bandwidth?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE: $5 CHALLENGE -->
+<section class="section section-alt" id="features">
+  <div class="container">
+    <div class="features-2col">
+      <div class="feature-text reveal">
+        <div class="section-label">Feature — Value Analysis</div>
+        <h3>The <em>$5 Challenge</em><br>Calculator</h3>
+        <p>Every purchase is evaluated against a cost-per-use threshold. If each time you use the item costs more than $5, it's probably not worth it — and the app tells you exactly why.</p>
+        <p>The formula is simple: <strong>Price ÷ Estimated Uses = Cost Per Use.</strong> The challenge is being honest about the estimated uses.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-muted);">
+          <li style="padding-left:var(--space-5);position:relative"><span style="position:absolute;left:0;color:var(--color-primary)">✓</span> Live calculation updates as you type</li>
+          <li style="padding-left:var(--space-5);position:relative"><span style="position:absolute;left:0;color:var(--color-primary)">✓</span> Green / red pass/fail indicator</li>
+          <li style="padding-left:var(--space-5);position:relative"><span style="position:absolute;left:0;color:var(--color-primary)">✓</span> Weighted into final decision score</li>
+        </ul>
+      </div>
+      <div class="feature-visual reveal">
+        <div class="calc-mockup">
+          <div style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);">$5 Challenge Calculator</div>
+          <div class="calc-row"><span class="calc-label">Item Price</span><span class="calc-value">$60.00</span></div>
+          <div class="calc-row"><span class="calc-label">Times I'll Use It</span><span class="calc-value">15 times</span></div>
+          <div class="calc-row"><span class="calc-label">Cost Per Use</span><span class="calc-value">$4.00</span></div>
+          <div class="calc-result">
+            <span class="calc-result-label">✓ Passes the $5 Challenge</span>
+            <span class="calc-result-value">$4.00</span>
+          </div>
+          <div style="margin-top:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);">
+            <div style="font-size:var(--text-xs);color:var(--color-text-faint);margin-bottom:var(--space-2);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Examples</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);display:flex;justify-content:space-between;"><span>$80 bread maker ÷ 8 uses</span><span style="color:var(--color-error);font-weight:600;">$10.00 ✗</span></div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);display:flex;justify-content:space-between;"><span>$40 yoga mat ÷ 100 uses</span><span style="color:var(--color-success);font-weight:600;">$0.40 ✓</span></div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);display:flex;justify-content:space-between;"><span>$200 coffee maker ÷ 600 uses</span><span style="color:var(--color-success);font-weight:600;">$0.33 ✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE: MONEY SOURCE -->
+<section class="section">
+  <div class="container">
+    <div class="features-2col reverse">
+      <div class="feature-text reveal">
+        <div class="section-label">Feature — Budget Awareness</div>
+        <h3>Money source <em>matters</em></h3>
+        <p>Where the money comes from changes everything. The app prompts users to classify their funding source — and flags dangerous patterns like raiding an emergency fund for a want.</p>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-2);">
+          <div style="font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-3);"><span style="color:var(--color-success);font-weight:700;width:20px;">✓</span><span><strong>Paycheck / Savings / Side Gig</strong> — safe for planned purchases</span></div>
+          <div style="font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-3);"><span style="color:var(--color-error);font-weight:700;width:20px;">✗</span><span><strong>Emergency Fund / Credit</strong> — flagged for wants</span></div>
+        </div>
+      </div>
+      <div class="feature-visual reveal" style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <div style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--color-text-faint);">Money Source + Need / Want</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+          <div style="background:var(--color-success-highlight);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);">
+            <div style="font-size:var(--text-xs);color:var(--color-success);font-weight:700;margin-bottom:var(--space-1);">PAYCHECK</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Safe for planned purchases</div>
+          </div>
+          <div style="background:var(--color-success-highlight);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);">
+            <div style="font-size:var(--text-xs);color:var(--color-success);font-weight:700;margin-bottom:var(--space-1);">SAVINGS</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">OK if emergency fund is intact</div>
+          </div>
+          <div style="background:var(--color-success-highlight);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);">
+            <div style="font-size:var(--text-xs);color:var(--color-success);font-weight:700;margin-bottom:var(--space-1);">SIDE GIG</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Great for discretionary items</div>
+          </div>
+          <div style="background:var(--color-error-highlight);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);">
+            <div style="font-size:var(--text-xs);color:var(--color-error);font-weight:700;margin-bottom:var(--space-1);">EMERGENCY FUND</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">⚠ Only for true needs</div>
+          </div>
+          <div style="background:var(--color-error-highlight);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);grid-column:1/-1;">
+            <div style="font-size:var(--text-xs);color:var(--color-error);font-weight:700;margin-bottom:var(--space-1);">CREDIT CARD</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">⚠ Risky unless paid in full immediately</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE: REWARD -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Feature — Behavioral Motivation</div>
+    <h2 class="section-title">Turn purchases into <em>rewards</em></h2>
+    <p class="section-desc">Instead of impulse-buying, users can designate an item as a reward for completing a meaningful goal — turning procrastination fuel into genuine motivation.</p>
+    <div class="reward-grid">
+      <div class="reward-card reveal">
+        <div class="reward-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 4v1M12 19v1M4 12H3M21 12h-1M6.34 17.66l-.7.7M18.36 5.64l-.7.7M6.34 6.34l-.7-.7M18.36 18.36l-.7-.7"/></svg>
+        </div>
+        <h4>Define the reward item</h4>
+        <p>Check "Is this a reward?" to unlock a goal field. The item is held in a "pending reward" state until the goal is marked complete.</p>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h4>Name your goal</h4>
+        <p>Write the specific task: "Complete the online course," "Declutter the garage," "Finish the Q1 report." Specificity drives follow-through.</p>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <h4>Earn the reward</h4>
+        <p>Only after the task is marked complete does the item unlock for purchase — still subject to all five decision-framework checks.</p>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M16 12h6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>
+        </div>
+        <h4>Reward must still pass the framework</h4>
+        <p>A reward that fails the $5 challenge or is funded by an emergency fund is still rejected. The reward designation adds motivation — not a bypass.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA MODEL -->
+<section class="section" id="data-model">
+  <div class="container">
+    <div class="section-label">Data Model</div>
+    <h2 class="section-title">Database <em>schema</em></h2>
+    <p class="section-desc">Two core tables. All purchase decisions are stored server-side and linked to an optional email. Admins can export the email list as CSV.</p>
+    <div class="schema-grid">
+      <div>
+        <div class="schema-table reveal">
+          <div class="schema-table-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            users_emails
+          </div>
+          <div class="schema-field"><span class="schema-field-name">id</span><span class="schema-field-type">uuid pk</span></div>
+          <div class="schema-field"><span class="schema-field-name">email</span><span class="schema-field-type">string unique</span><span class="schema-field-note">validated, required</span></div>
+          <div class="schema-field"><span class="schema-field-name">created_at</span><span class="schema-field-type">timestamp</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="schema-table reveal">
+          <div class="schema-table-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            purchase_items
+          </div>
+          <div class="schema-field"><span class="schema-field-name">id</span><span class="schema-field-type">uuid pk</span></div>
+          <div class="schema-field"><span class="schema-field-name">item_name</span><span class="schema-field-type">string</span><span class="schema-field-note">required</span></div>
+          <div class="schema-field"><span class="schema-field-name">category</span><span class="schema-field-type">string</span></div>
+          <div class="schema-field"><span class="schema-field-name">price</span><span class="schema-field-type">decimal</span><span class="schema-field-note">in dollars</span></div>
+          <div class="schema-field"><span class="schema-field-name">money_source</span><span class="schema-field-type">enum</span><span class="schema-field-note">Paycheck / Savings / Side Gig / Emergency / Credit</span></div>
+          <div class="schema-field"><span class="schema-field-name">need_or_want</span><span class="schema-field-type">enum</span><span class="schema-field-note">Need / Want</span></div>
+          <div class="schema-field"><span class="schema-field-name">times_use_estimate</span><span class="schema-field-type">integer</span></div>
+          <div class="schema-field"><span class="schema-field-name">cost_per_use</span><span class="schema-field-type">decimal</span><span class="schema-field-note">computed: price ÷ uses</span></div>
+          <div class="schema-field"><span class="schema-field-name">passes_5_challenge</span><span class="schema-field-type">boolean</span><span class="schema-field-note">cost_per_use ≤ $5</span></div>
+          <div class="schema-field"><span class="schema-field-name">step1–5 fields</span><span class="schema-field-type">text / enum</span><span class="schema-field-note">availability bias steps</span></div>
+          <div class="schema-field"><span class="schema-field-name">final_decision</span><span class="schema-field-type">enum</span><span class="schema-field-note">Buy / Reconsider / Don't Buy</span></div>
+          <div class="schema-field"><span class="schema-field-name">is_reward_item</span><span class="schema-field-type">boolean</span></div>
+          <div class="schema-field"><span class="schema-field-name">reward_task_goal</span><span class="schema-field-type">text</span></div>
+          <div class="schema-field"><span class="schema-field-name">created_at / updated_at</span><span class="schema-field-type">timestamp</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- API ENDPOINTS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">API Design</div>
+    <h2 class="section-title">REST <em>endpoints</em></h2>
+    <p class="section-desc">A minimal, clean REST API surfaces all app functionality. The admin export endpoint should be protected before going to production.</p>
+    <div class="api-list reveal">
+      <div class="api-item">
+        <span class="api-method api-method--post">POST</span>
+        <div><span class="api-path">/emails</span><span class="api-desc">Capture and store a user's email address. Validates format, prevents duplicates. Returns success message on the landing screen before revealing the main app.</span></div>
+      </div>
+      <div class="api-item">
+        <span class="api-method api-method--post">POST</span>
+        <div><span class="api-path">/items</span><span class="api-desc">Create a new purchase decision record. Requires item_name, price, money_source, need_or_want, and times_use_estimate. Computes cost_per_use and passes_5_challenge server-side.</span></div>
+      </div>
+      <div class="api-item">
+        <span class="api-method api-method--put">PUT</span>
+        <div><span class="api-path">/items/:id</span><span class="api-desc">Update an existing item. Used when the user reopens a worksheet to edit details or change their final decision. Recomputes cost_per_use on save.</span></div>
+      </div>
+      <div class="api-item">
+        <span class="api-method api-method--get">GET</span>
+        <div><span class="api-path">/items</span><span class="api-desc">Return all purchase items for the dashboard. Supports query params for filtering by final_decision, need_or_want, and sorting by cost_per_use or date.</span></div>
+      </div>
+      <div class="api-item">
+        <span class="api-method api-method--get">GET</span>
+        <div><span class="api-path">/admin/emails/export</span><span class="api-desc">Returns all collected emails as a CSV download. ⚠ Must be protected with authentication before production deployment.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION LOGIC -->
+<section class="section" id="logic">
+  <div class="container">
+    <div class="section-label">Decision Engine</div>
+    <h2 class="section-title">Green, Yellow, <em>Red</em></h2>
+    <p class="section-desc">Every item gets a computed recommendation based on five weighted inputs. The result is shown as a clear, color-coded badge with plain-language reasoning.</p>
+    <div class="decision-cards">
+      <div class="decision-card decision-card--green reveal">
+        <div class="decision-card-icon">🟢</div>
+        <div class="decision-card-label">BUY</div>
+        <ul>
+          <li>High probability of use</li>
+          <li>Waited 24–48+ hours</li>
+          <li>Need — or high-value want</li>
+          <li>Passes $5 challenge</li>
+          <li>Funded from paycheck, savings, or side gig</li>
+        </ul>
+      </div>
+      <div class="decision-card decision-card--yellow reveal">
+        <div class="decision-card-icon">🟡</div>
+        <div class="decision-card-label">RECONSIDER</div>
+        <ul>
+          <li>Medium probability of use</li>
+          <li>Borderline $5 challenge</li>
+          <li>Want — but safe funding source</li>
+          <li>Alternatives not yet explored</li>
+          <li>Action: wait longer or increase use estimate</li>
+        </ul>
+      </div>
+      <div class="decision-card decision-card--red reveal">
+        <div class="decision-card-icon">🔴</div>
+        <div class="decision-card-label">DON'T BUY</div>
+        <ul>
+          <li>Low probability of use</li>
+          <li>Fails $5 challenge significantly</li>
+          <li>Want funded from emergency fund</li>
+          <li>Haven't waited 24 hours</li>
+          <li>Better alternatives already named</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:var(--space-8);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);" class="reveal">
+      <div style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);">Optional Weighted Scoring (tie-breaker)</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:var(--space-4);">
+        <div style="font-size:var(--text-sm);"><strong>Money Source</strong><br><span style="color:var(--color-text-muted);">25 pts max</span></div>
+        <div style="font-size:var(--text-sm);"><strong>Need vs. Want</strong><br><span style="color:var(--color-text-muted);">25 pts max</span></div>
+        <div style="font-size:var(--text-sm);"><strong>$5 Challenge</strong><br><span style="color:var(--color-text-muted);">25 pts max</span></div>
+        <div style="font-size:var(--text-sm);"><strong>Probability</strong><br><span style="color:var(--color-text-muted);">25 pts max</span></div>
+      </div>
+      <div style="margin-top:var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted);padding-top:var(--space-4);border-top:1px solid var(--color-divider);">
+        80+ pts = Green Light &nbsp;·&nbsp; 50–79 pts = Yellow Light &nbsp;·&nbsp; Below 50 = Red Light
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 30-DAY REFLECTION -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Feature — Long-Term Learning</div>
+    <h2 class="section-title">30-Day <em>Reflection</em></h2>
+    <p class="section-desc">30 days after any decision — buy or don't buy — the app prompts a reflection. This closes the feedback loop and teaches users their own purchasing patterns over time.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);" class="reveal">
+      <div style="background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);">
+        <div style="font-weight:700;font-size:var(--text-sm);color:var(--color-text);margin-bottom:var(--space-4);border-bottom:1px solid var(--color-divider);padding-bottom:var(--space-3);">After <em>Not</em> Buying</div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Did you miss this item?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Did you solve the problem another way?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">What did you do with the money instead?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">How much space / mental energy did you save?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;">Key Insight →</div>
+        </div>
+      </div>
+      <div style="background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);">
+        <div style="font-weight:700;font-size:var(--text-sm);color:var(--color-text);margin-bottom:var(--space-4);border-bottom:1px solid var(--color-divider);padding-bottom:var(--space-3);">After Buying</div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">How often are you actually using it?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Was it worth the money?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Is it taking up more space than expected?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Any regrets?</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;">Key Insight →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE CTA -->
+<section class="cta-section" id="email">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:var(--space-12);align-items:center;">
+      <div>
+        <div class="section-label" style="color:oklch(from var(--color-text-inverse) l c h / 0.4);">Email Capture</div>
+        <h2 class="section-title">Collect <em>user emails</em><br>on every sign-up</h2>
+        <p class="section-desc">The landing screen requires an email before revealing the full app. Emails are stored in a dedicated database table and exportable as CSV at any time from the admin panel.</p>
+      </div>
+      <div class="email-capture reveal" style="min-width:280px;">
+        <div style="font-size:var(--text-sm);font-weight:600;color:oklch(from var(--color-text-inverse) l c h / 0.8);margin-bottom:var(--space-4);">Try the app →</div>
+        <div class="email-form">
+          <input type="email" class="email-input" placeholder="your@email.com" aria-label="Email address">
+          <button class="btn btn--inverse" type="button">Get Started Free</button>
+        </div>
+        <p class="email-note">Your email is stored securely and never sold. Unsubscribe at any time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container--wide footer-inner">
+    <div class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-label="Pre-Buy Coach logo">
+        <rect x="2" y="2" width="24" height="24" rx="6" fill="var(--color-primary)" opacity="0.12"/>
+        <path d="M9 14 L13 18 L19 10" stroke="var(--color-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="14" cy="14" r="11" stroke="var(--color-primary)" stroke-width="1.5" fill="none"/>
+      </svg>
+      Pre-Buy Decision Coach
+    </div>
+    <p class="footer-copy">Product specification — ready for development. Built to overcome availability bias.</p>
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  if(t) t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+})();
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Smooth nav links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>

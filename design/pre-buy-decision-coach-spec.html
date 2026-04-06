@@ -7,6 +7,7 @@
 <meta name="description" content="A full product specification for the Pre-Buy Decision Coach — a behavioral finance web app that helps people overcome availability bias before purchasing.">
 <meta property="og:title" content="Pre-Buy Decision Coach — Product Spec">
 <meta property="og:description" content="Interactive web app spec: 5-step availability bias worksheet, $5 challenge calculator, email capture, and 30-day reflection tools.">
+<link rel="stylesheet" href="../assets/css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
@@ -125,8 +126,10 @@ a:hover { color: var(--color-primary-hover); }
 .container--narrow { max-width: var(--content-narrow); margin-inline: auto; padding-inline: var(--space-6); }
 
 /* ─── NAV ─── */
-nav {
-  position: sticky; top: 0; z-index: 100;
+.site-header { position: sticky; top: 0; z-index: 101; font-family: var(--font-family-sans); }
+.site-header .logo { color: hsl(var(--foreground)); }
+.spec-nav {
+  position: sticky; top: 100px; z-index: 100;
   background: oklch(from var(--color-bg) l c h / 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08);
@@ -204,8 +207,8 @@ nav {
 
 /* ─── PROBLEM STRIP ─── */
 .problem-strip { background: var(--color-text); color: var(--color-text-inverse); padding: var(--space-12) 0; }
-.problem-strip blockquote { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-style: italic; line-height: 1.4; max-width: 56ch; margin-inline: auto; text-align: center; opacity: 0.92; }
-.problem-strip blockquote cite { display: block; font-family: var(--font-body); font-style: normal; font-size: var(--text-sm); opacity: 0.5; margin-top: var(--space-4); letter-spacing: 0.04em; text-transform: uppercase; }
+.problem-strip blockquote { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-style: italic; line-height: 1.4; max-width: 56ch; margin-inline: auto; text-align: center; color: var(--color-text-inverse); border-left-color: oklch(from var(--color-text-inverse) l c h / 0.2); }
+.problem-strip blockquote cite { display: block; font-family: var(--font-body); font-style: normal; font-size: var(--text-sm); opacity: 0.7; margin-top: var(--space-4); letter-spacing: 0.04em; text-transform: uppercase; }
 
 /* ─── FIVE STEPS ─── */
 .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--space-5); }
@@ -312,8 +315,24 @@ footer { padding: var(--space-12) 0; border-top: 1px solid var(--color-divider);
 </head>
 <body>
 
+    <header class="site-header">
+        <div class="container flex-between">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+                Jason Bedient
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Design</a>
+                <a href="../leadership.html">Leadership</a>
+                <a href="../about.html">About</a>
+                <a href="../blog/index.html">Blog</a>
+                <a href="../contact.html" class="btn btn-outline">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
 <!-- NAV -->
-<nav>
+<nav class="spec-nav">
   <div class="container--wide nav-inner">
     <a href="#" class="nav-logo">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="Pre-Buy Coach logo">

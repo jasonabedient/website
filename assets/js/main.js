@@ -123,6 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData.entries());
 
+            // Simple client-side email check before Sending
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(data.email)) {
+                feedbackEl.style.display = 'block';
+                feedbackEl.textContent = 'Please enter a valid email address.';
+                feedbackEl.style.color = 'hsl(var(--destructive))';
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+                return;
+            }
+
             try {
                 const response = await fetch('/api/contact', {
                     method: 'POST',

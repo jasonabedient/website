@@ -5,10 +5,23 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { name, email, message } = req.body;
+        const { name, email, message, website_url } = req.body;
 
+        // 1. Honeypot check (Bot detection)
+        if (website_url) {
+            console.warn('Spam detected: Honeypot field filled.');
+            return res.status(200).json({ success: true, message: 'Message sent successfully!' }); // Silent fail for bots
+        }
+
+        // 2. Validate required fields
         if (!name || !email || !message) {
             return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // 3. Email Format Validation (RFC 5322 regex)
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Please enter a valid email address.' });
         }
 
         const NOTION_TOKEN = process.env.NOTION_TOKEN;

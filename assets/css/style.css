@@ -674,6 +674,19 @@ blockquote {
     border-color: var(--text-main);
 }
 
+/* Honeypot Field Styling */
+.visual-hidden {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+    /* Added to trap bots that might ignore clip */
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* Footer */
 .site-footer {
     padding: var(--spacing-lg) 0;

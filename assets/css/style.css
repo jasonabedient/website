@@ -344,6 +344,19 @@ blockquote {
     text-decoration: none;
 }
 
+/* Outline White (for dark backgrounds) */
+.btn-outline-white {
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+}
+
+.btn-outline-white:hover {
+    background-color: white;
+    color: #000;
+    text-decoration: none;
+}
+
 /* Ghost Button */
 .btn-ghost {
     background-color: transparent;

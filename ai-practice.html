@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design Practice | Jason Bedient</title>
+    <meta name="description" content="AI-first design workflow, designing for AI products, and human-in-the-loop patterns by Jason Bedient.">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container flex-between">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+                Jason Bedient
+            </a>
+            <nav class="main-nav">
+                <a href="design/index.html">Design</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="about.html">About</a>
+                <a href="blog/index.html">Blog</a>
+                <a href="videos/index.html">Videos</a>
+                <a href="ai-practice.html" class="active">AI Practice</a>
+                <a href="contact.html" class="btn btn-outline">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="section hero" style="background: #000; color: #fff; padding: var(--spacing-xl) 0;">
+            <div class="container">
+                <h1 style="color: #fff;">The AI Design Practice</h1>
+                <p class="hero-subtitle" style="color: #a1a1aa;">Designing at the velocity of thought. I build AI products and use AI to build them.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: var(--spacing-xl);">
+                    <div>
+                        <h2>Core Philosophy</h2>
+                    </div>
+                    <div>
+                        <p>I believe that AI is not just a tool for automation, but a new material for design. My practice is built on the idea that <strong>prompting is a design skill</strong>—it is the bridge between human intent and machine execution.</p>
+                        <p>I advocate for an "AI-First" mindset, where we don't just add AI features to existing products, but we design products with AI at the core, acknowledging its probabilistic nature and designing for the "uncertainty states" that traditional software ignores.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-secondary">
+            <div class="container">
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: var(--spacing-xl);">
+                    <div>
+                        <h2>AI-First Workflow</h2>
+                        <p>How I build at the speed of light.</p>
+                    </div>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                        <div class="card" style="background: #fff; padding: var(--spacing-md); border-radius: var(--radius); border: 1px solid var(--border-color);">
+                            <h3>The Stack</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li><strong>Figma:</strong> Core visual design & prototyping.</li>
+                                <li><strong>Claude:</strong> My primary AI partner for code generation and complex reasoning.</li>
+                                <li><strong>V0 / Vercel:</strong> Rapid UI generation and deployment.</li>
+                                <li><strong>Cursor:</strong> AI-powered IDE for turning designs into code.</li>
+                                <li><strong>Notion & Perplexity:</strong> The brain of my workflow for organization and personal research.</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="background: #fff; padding: var(--spacing-md); border-radius: var(--radius); border: 1px solid var(--border-color);">
+                            <h3>Synthesis</h3>
+                            <p>My workflow is a continuous loop between high-fidelity visual design and functional code. By leveraging AI at every step, I can move from a rough sketch to a deployable React component in minutes rather than days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: var(--spacing-xl);">
+                    <div>
+                        <h2>Designing FOR AI</h2>
+                        <p>Designing for probabilistic outcomes.</p>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h3 style="margin-bottom: var(--spacing-xs);">Uncertainty States</h3>
+                            <p>In enterprise AI, "Success" and "Error" aren't enough. We must design for confidence scores, hallucinations, and "I don't know" states that maintain user trust.</p>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h3 style="margin-bottom: var(--spacing-xs);">Trust Calibration</h3>
+                            <p>Designing interfaces that help users understand <em>why</em> an AI made a certain recommendation, using explainability patterns and clear data transparency.</p>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h3 style="margin-bottom: var(--spacing-xs);">Human-in-the-Loop</h3>
+                            <p>Validating AI outputs through intuitive steering mechanisms, allowing users to correct, refine, and co-create with the model.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-secondary">
+            <div class="container">
+                <h2>Watch the Process</h2>
+                <div class="grid video-list-grid" style="margin-top: var(--spacing-md);">
+                    <!-- Featured AI Video -->
+                    <article class="video-preview-card">
+                        <a href="https://www.youtube.com/watch?v=K1qPmGJ8psU" target="_blank" class="video-thumbnail-container">
+                            <img src="https://img.youtube.com/vi/K1qPmGJ8psU/maxresdefault.jpg" alt="Stop Over-Prompting Thumbnail" class="video-thumbnail">
+                            <div class="video-play-overlay">
+                                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                            </div>
+                        </a>
+                        <div class="video-details">
+                            <span class="date">AI Workflow</span>
+                            <a href="https://www.youtube.com/watch?v=K1qPmGJ8psU" target="_blank">
+                                <h3>Stop Over-Prompting: The Fastest Code-to-Figma Workflow</h3>
+                            </a>
+                        </div>
+                    </article>
+                    <article class="video-preview-card">
+                        <a href="https://www.youtube.com/watch?v=hCu9lU_wk1k" target="_blank" class="video-thumbnail-container">
+                            <img src="https://img.youtube.com/vi/hCu9lU_wk1k/maxresdefault.jpg" alt="Vercel V0 Thumbnail" class="video-thumbnail">
+                            <div class="video-play-overlay">
+                                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                            </div>
+                        </a>
+                        <div class="video-details">
+                            <span class="date">AI Tools</span>
+                            <a href="https://www.youtube.com/watch?v=hCu9lU_wk1k" target="_blank">
+                                <h3>I tried Vercel + V0 AI website builder</h3>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+                <div style="margin-top: var(--spacing-lg); text-align: center;">
+                    <a href="videos/index.html" class="btn btn-outline">View All Videos &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="flex-between footer-content">
+                <div class="footer-left">
+                    <p class="footer-logo">Jason Bedient</p>
+                    <p class="copyright">&copy; 2026 Jason Bedient. All rights reserved.</p>
+                </div>
+                <div class="footer-socials">
+                    <a href="https://www.linkedin.com/in/jasonbedient/">LinkedIn</a>
+                    <a href="https://twitter.com/jasonbedient">Twitter/X</a>
+                    <a href="https://dribbble.com/jasonbedient">Dribbble</a>
+                    <a href="mailto:jason@jasonbedient.com">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

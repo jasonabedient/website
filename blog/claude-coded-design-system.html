@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Coded Design System Documentation Website | Jason Bedient</title>
+    <meta name="description" content="How I used Claude Code to build a fully functional design system documentation website in just 2 hours, replacing enterprise tools like Supernova.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container flex-between">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+                Jason Bedient
+            </a>
+            <nav class="main-nav">
+                <a href="../design/index.html">Design</a>
+                <a href="../leadership.html">Leadership</a>
+                <a href="../about.html">About</a>
+                <a href="index.html" class="active">Blog</a>
+                <a href="../videos/index.html">Videos</a>
+                <a href="../contact.html" class="btn btn-outline">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <header class="case-study-hero">
+                <div class="container">
+                    <nav aria-label="breadcrumb" style="margin-bottom: 2rem; font-size: 0.9rem;">
+                        <a href="../index.html" style="text-decoration: none; color: var(--text-muted);">Home</a>
+                        <span style="margin: 0 0.5rem; color: var(--text-muted);">/</span>
+                        <a href="index.html" style="text-decoration: none; color: var(--text-muted);">Blog</a>
+                    </nav>
+                    <span class="date" style="display: block; margin-bottom: 1rem; color: var(--text-muted);">April 29,
+                        2026</span>
+                    <h1>Claude Coded Design System Documentation Website</h1>
+                    <p class="hero-subtitle">How I used Claude Code to build a fully functional design system
+                        documentation site — replacing enterprise tools in just 2 hours.</p>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="article-content" style="margin-top: var(--spacing-lg);">
+
+                    <p>At my last role as UX Director at Omnissa, we used a product named Supernova to build and host
+                        our design system documentation. It was a fairly feature-packed, cloud-hosted design
+                        documentation site that included content management, multiple users, version history, etc. It
+                        worked pretty well. Fast forward to now and I just had Claude Code build a fully functional
+                        design system website with code snippets, interaction, links back to the Figma file and GitHub.
+                    </p>
+
+                    <figure style="margin: var(--spacing-lg) 0;">
+                        <img src="../assets/images/blog/docsite/new-design-system.png"
+                            alt="The Claude-coded design system documentation site showing component catalog, sidebar navigation, and Figma/GitHub links"
+                            style="width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                        <figcaption style="text-align: center; margin-top: 0.75rem; color: var(--text-muted); font-size: 0.875rem;">The full design system documentation site — built entirely with Claude Code</figcaption>
+                    </figure>
+
+                    <p>The initial experience was built in about 2 hours. Going through all the components will take
+                        some time but it's so amazing to not have to wait on a busy developer to update an interaction,
+                        or apply design changes to the site. I can have the components built and then test them and
+                        ensure that all the expected functionality is there for each component.</p>
+
+                    <figure style="margin: var(--spacing-lg) 0;">
+                        <img src="../assets/images/blog/docsite/docsite-cards.png"
+                            alt="Design system component cards showing Color, Typography, Shadow tokens and Button components"
+                            style="width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                        <figcaption style="text-align: center; margin-top: 0.75rem; color: var(--text-muted); font-size: 0.875rem;">Design tokens and component cards — from basic setup to interactive buttons</figcaption>
+                    </figure>
+
+                    <h2>The Moment I Slowed Down</h2>
+
+                    <p>Claude is good at getting going and making rapid progress, yet, I realized something that made me
+                        slow down. Interacting with the agent, it was asking me how to code the charts and a few
+                        complicated elements. I knew we used ECharts for those in our production environments. So I
+                        didn't need to waste credits on that effort and they likely wouldn't be coded correctly on the
+                        doc site.</p>
+
+                    <p>I decided to ask a developer I work with if he or I should be building the components out as
+                        interactions. He said it was fine that I did, but he asked me to query Claude Code this:</p>
+
+                    <h3>The Developer's Checklist</h3>
+
+                    <ol>
+                        <li>Create the CSS variables for the atomic design tokens</li>
+                        <li>Map the CSS variables to Tailwind classes</li>
+                        <li>Build the design system using ShadCN, EChart, and the C3 Tailwind theme</li>
+                    </ol>
+
+                    <p>So the pipeline became: <strong>C3 CSS variables → Tailwind → ShadCN</strong></p>
+
+                    <p>This was very important because Claude wasn't actually using ShadCN and Tailwind as a base and I
+                        didn't realize it. About 1.5 months ago we were using Cursor and I had it build some things with
+                        ShadCN as a base. When we moved to Claude Code, those instructions must have gotten lost despite
+                        feeding Claude our GitHub repository which held base knowledge of design token mapping, etc.</p>
+
+                    <h2>Alignment with Production</h2>
+
+                    <p>Once I clarified this detail, I knew that what I was creating would be more aligned with our code
+                        base as a company and the interactions and base elements would be correct.</p>
+
+                    <p>After reviewing all the design and code implementation, my idea is to fill in the documentation
+                        details over time and build Skills and Rules that can be fed back into our agent for when dev and
+                        PMs need to create development and prototypes.</p>
+
+                    <figure style="margin: var(--spacing-lg) 0;">
+                        <video controls playsinline preload="metadata"
+                            style="width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"
+                            poster="../assets/images/blog/docsite/new-design-system.png">
+                            <source src="../assets/images/blog/docsite/documentation-site-example.mp4" type="video/mp4">
+                            <source src="../assets/images/blog/docsite/documentation-site-example.mov" type="video/quicktime">
+                            <p>Your browser doesn't support this video format. <a href="../assets/images/blog/docsite/documentation-site-example.mp4">Download the video</a> instead.</p>
+                        </video>
+                        <figcaption style="text-align: center; margin-top: 0.75rem; color: var(--text-muted); font-size: 0.875rem;">Video walkthrough of the design system documentation site in action</figcaption>
+                    </figure>
+
+                    <h2>What's Next?</h2>
+
+                    <p>How are you building agent skills for design in the enterprise space? I'd love to hear your
+                        thoughts — reach out on <a href="https://www.linkedin.com/in/jasonbedient/">LinkedIn</a> or drop
+                        me a <a href="../contact.html">message</a>.</p>
+
+                </div>
+            </div>
+
+            <nav class="case-study-nav section">
+                <div class="container flex-between">
+                    <a href="index.html" class="back-to-grid">&larr; Back to Writing</a>
+                </div>
+            </nav>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="flex-between footer-content">
+                <div class="footer-left">
+                    <p class="footer-logo">Jason Bedient</p>
+                    <p class="copyright">&copy; 2026 Jason Bedient. All rights reserved.</p>
+                </div>
+                <div class="footer-socials">
+                    <a href="https://www.linkedin.com/in/jasonbedient/">LinkedIn</a>
+                    <a href="mailto:jason@jasonbedient.com">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>

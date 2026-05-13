@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's The Charge — Product Design Case Study</title>
+  <meta name="description" content="How I designed and built an EV charging cost calculator that auto-detects your location, rate plan, and vehicle to give instant, accurate results." />
+  <style>
+    :root {
+      --fg: #0a0a0a;
+      --fg-muted: #6c717a;
+      --fg-soft: #949bae;
+      --bg: #ffffff;
+      --bg-page: #fafafa;
+      --bg-soft: #f5f7fc;
+      --bg-code: #f0f3fa;
+      --border: #d8dce8;
+      --border-strong: #bfc5d4;
+      --primary: #00b8d4;
+      --primary-dark: #0097a7;
+      --primary-soft: #e0f7fa;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --content-max: 1120px;
+      --content-narrow: 760px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #f5f5f5;
+        --fg-muted: #a3a3a3;
+        --fg-soft: #6c717a;
+        --bg: #171717;
+        --bg-page: #0a0a0a;
+        --bg-soft: #1f1f23;
+        --bg-code: #1f2230;
+        --border: #2e323b;
+        --border-strong: #434852;
+        --primary: #00e5ff;
+        --primary-dark: #00b8d4;
+        --primary-soft: #00b8d420;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-page);
+      color: var(--fg);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--bg-code);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative;
+      padding: 96px 24px 72px;
+      background:
+        radial-gradient(1200px 600px at 20% 20%, rgba(0, 184, 212, 0.16), transparent 60%),
+        radial-gradient(1000px 500px at 80% 80%, rgba(0, 229, 255, 0.10), transparent 60%),
+        var(--bg-page);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero__brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      color: var(--fg);
+    }
+    .hero__brand-icon {
+      width: 36px;
+      height: 36px;
+      background: #0a0a0a;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .hero__brand-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .hero__brand-meta strong {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .hero__brand-meta span {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .hero__eyebrow::before {
+      content: "⚡";
+      font-size: 11px;
+    }
+    h1.hero__title {
+      margin: 0 0 24px;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      max-width: 18ch;
+    }
+    .hero__title-accent {
+      color: var(--primary);
+    }
+    .hero__lede {
+      margin: 0;
+      font-size: clamp(17px, 2vw, 20px);
+      color: var(--fg-muted);
+      max-width: 56ch;
+      line-height: 1.5;
+    }
+    .hero__stats {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .stat {
+      padding: 20px 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .stat__value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1;
+    }
+    .stat__label {
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 720px) {
+      .hero__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* ============ SECTION ============ */
+    section.s {
+      padding: 96px 24px;
+    }
+    section.s--soft { background: var(--bg); border-block: 1px solid var(--border); }
+    .s__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+    .s__inner--narrow {
+      max-width: var(--content-narrow);
+      margin: 0 auto;
+    }
+    .s__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+    }
+    .s__title {
+      margin: 0 0 16px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      max-width: 22ch;
+    }
+    .s__lede {
+      margin: 0;
+      font-size: 18px;
+      color: var(--fg-muted);
+      max-width: 56ch;
+      line-height: 1.55;
+    }
+
+    /* ============ SCREENSHOT ============ */
+    .shot {
+      margin-top: 48px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      box-shadow:
+        0 1px 2px rgba(10, 10, 10, 0.04),
+        0 24px 60px -24px rgba(10, 10, 10, 0.18);
+    }
+    .shot__chrome {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+    .shot__dots {
+      display: inline-flex;
+      gap: 6px;
+      margin-right: 8px;
+    }
+    .shot__dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      opacity: 0.6;
+    }
+    .shot__img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .shot__caption {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+    .shot__caption strong { color: var(--fg); font-weight: 600; }
+
+    /* ============ ANNOTATION GRID ============ */
+    .annotated {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .annotated { grid-template-columns: 1fr; } }
+    .annotated .shot { margin-top: 0; }
+    .callouts {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .callout {
+      padding: 16px 18px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--primary);
+    }
+    .callout__title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      letter-spacing: -0.005em;
+    }
+    .callout__body {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ============ CARD GRID ============ */
+    .cards {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      padding: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .card__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+    .card__title {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .card__body {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--fg-muted);
+      line-height: 1.55;
+    }
+
+    /* ============ PIPELINE DIAGRAM ============ */
+    .pipeline {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .pipeline__step {
+      padding: 24px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .pipeline__step:last-child { border-right: 0; }
+    .pipeline__num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .pipeline__name {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+    .pipeline__sub {
+      font-size: 11px;
+      color: var(--fg-muted);
+      margin: 0;
+    }
+    @media (max-width: 720px) {
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+      .pipeline__step { border-bottom: 1px solid var(--border); }
+    }
+
+    /* ============ FOOTER ============ */
+    footer.foot {
+      padding: 64px 24px 80px;
+      background: var(--bg-page);
+      border-top: 1px solid var(--border);
+    }
+    .foot__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+    .foot__title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .foot__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn--primary { background: var(--primary); color: #0a0a0a; }
+    .btn--primary:hover { opacity: 0.92; }
+    .btn--ghost { color: var(--fg); border: 1px solid var(--border-strong); }
+    .btn--ghost:hover { background: var(--bg); }
+    .foot__meta {
+      font-size: 12px;
+      color: var(--fg-soft);
+      margin-top: 16px;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container flex-between">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+        Jason Bedient
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="active">Design</a>
+        <a href="../leadership.html">Leadership</a>
+        <a href="../about.html">About</a>
+        <a href="../blog/index.html">Blog</a>
+        <a href="../videos/index.html">Videos</a>
+        <a href="../contact.html" class="btn btn-outline">Let's Talk</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__brand">
+        <div class="hero__brand-icon">⚡</div>
+        <span class="hero__brand-meta">
+          <strong>What's The Charge</strong>
+          <span>whatsthecharge.com</span>
+        </span>
+      </div>
+
+      <span class="hero__eyebrow">Product Design &amp; Development</span>
+      <h1 class="hero__title">
+        The EV charging calculator that <span class="hero__title-accent">actually knows where you are.</span>
+      </h1>
+      <p class="hero__lede">
+        Most EV cost calculators make you hunt for your electricity rate. What's The Charge auto-detects your state and rate plan on load, pre-fills your charger specs, and delivers a real cost estimate in under 10 seconds — no account required.
+      </p>
+
+      <div class="hero__stats">
+        <div class="stat"><div class="stat__value">10s</div><div class="stat__label">Time to first result</div></div>
+        <div class="stat"><div class="stat__value">50+</div><div class="stat__label">US states &amp; rate plans</div></div>
+        <div class="stat"><div class="stat__value">3</div><div class="stat__label">Charger types supported</div></div>
+        <div class="stat"><div class="stat__value">100%</div><div class="stat__label">No account required</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE PROBLEM ============ -->
+  <section class="s">
+    <div class="s__inner s__inner--narrow">
+      <div class="s__eyebrow">The problem</div>
+      <h2 class="s__title">EV ownership has a hidden math problem.</h2>
+      <p class="s__lede">
+        New EV owners know gas costs money per gallon. Electricity costs money per kWh — but rates vary wildly by state, utility, and time-of-use plan. Most people have no idea what they're actually paying to charge at home, whether a Level 2 charger is worth buying, or how DC fast charging compares. Existing tools either buried users in inputs or oversimplified to the point of being useless.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE SOLUTION ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">The solution</div>
+      <h2 class="s__title">Smart defaults, zero friction.</h2>
+      <p class="s__lede">
+        The entire design philosophy is: get out of the user's way. Auto-detect their location, pre-set the most common charger level, pull their state's standard utility rate — then let them override anything. Most users never touch the defaults.
+      </p>
+
+      <div class="pipeline">
+        <div class="pipeline__step">
+          <div class="pipeline__num">1</div>
+          <p class="pipeline__name">Geolocation</p>
+          <p class="pipeline__sub">State auto-set on load</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">2</div>
+          <p class="pipeline__name">Rate lookup</p>
+          <p class="pipeline__sub">Default utility rate pulled</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">3</div>
+          <p class="pipeline__name">Vehicle select</p>
+          <p class="pipeline__sub">Year / Make / Model / Trim</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">4</div>
+          <p class="pipeline__name">Charger config</p>
+          <p class="pipeline__sub">Level 1 / 2 / DC Fast</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">5</div>
+          <p class="pipeline__name">Instant result</p>
+          <p class="pipeline__sub">Cost + time estimate</p>
+        </div>
+      </div>
+
+      <div class="shot">
+        <div class="shot__chrome">
+          <div class="shot__dots"><span></span><span></span><span></span></div>
+          <span>whatsthecharge.com — Calculator</span>
+        </div>
+        <img class="shot__img" src="../assets/images/case-study/wtc-hero.png" alt="What's The Charge calculator — dark UI with year/make/model dropdowns, charger power, state auto-set to California, electricity rate pre-filled" onerror="this.parentElement.querySelector('.shot__placeholder') && (this.parentElement.querySelector('.shot__placeholder').style.display='flex'); this.style.display='none'" />
+        <div class="shot__caption">
+          <strong>Zero required setup.</strong> State auto-detected from browser location, electricity rate pre-filled from utility data, charger power defaulted to the most common Level 2 (5.8 kW / 24A). The user's only required action is picking their vehicle.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESIGN DECISIONS ============ -->
+  <section class="s">
+    <div class="s__inner">
+      <div class="s__eyebrow">Key design decisions</div>
+      <h2 class="s__title">Every field earns its place.</h2>
+      <p class="s__lede">
+        The calculator has exactly the inputs it needs and none it doesn't. Each decision was made by asking: would a typical EV owner know this off the top of their head?
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card__icon">📍</div>
+          <h3 class="card__title">Location-aware rate defaults</h3>
+          <p class="card__body">Browser geolocation sets your state on load. The most common utility rate plan is pre-selected, with an override dropdown for TOU and EV-specific plans.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🚗</div>
+          <h3 class="card__title">Cascading vehicle picker</h3>
+          <p class="card__body">Year → Make → Model → Trim. Each selection filters the next. Battery size and efficiency data are populated automatically — no manual spec lookup required.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🔌</div>
+          <h3 class="card__title">Charger level selector</h3>
+          <p class="card__body">Level 1 (standard outlet), Level 2 (home charger), and DC Fast Charging — each with real-world kW defaults. Advanced users can dial in exact charger output.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🌙</div>
+          <h3 class="card__title">Dark-first visual design</h3>
+          <p class="card__body">EV culture skews tech-forward. A dark theme with a cyan accent color felt native to that audience — and performs well for nighttime use when most people plug in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS SECTION ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">The output</div>
+      <h2 class="s__title">Real numbers, not ballpark estimates.</h2>
+      <p class="s__lede">
+        The result screen shows charging time, total cost, cost per mile equivalent, and a comparison against local gas prices — giving the user immediate context for whether their EV is saving them money.
+      </p>
+
+      <div class="annotated">
+        <div class="shot">
+          <div class="shot__chrome">
+            <div class="shot__dots"><span></span><span></span><span></span></div>
+            <span>whatsthecharge.com — Results</span>
+          </div>
+          <img class="shot__img" src="../assets/images/case-study/wtc-results.png" alt="What's The Charge results — charging time, cost, and cost-per-mile breakdown" onerror="this.style.display='none'" />
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3 class="callout__title">Charging time estimate</h3>
+            <p class="callout__body">Based on your vehicle's battery size, current charge level, target charge level, and charger output — not a generic range pulled from a spec sheet.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">True cost breakdown</h3>
+            <p class="callout__body">Total cost for this session, cost per full charge, and monthly cost at typical driving patterns — all calculated from your actual utility rate, not a national average.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Gas comparison</h3>
+            <p class="callout__body">The equivalent MPG cost at local gas prices puts the savings in a frame of reference every driver already understands.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Shareable &amp; bookmarkable</h3>
+            <p class="callout__body">Calculator state is encoded in the URL — users can bookmark their setup or share a direct link with their exact vehicle and rate configuration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TECHNICAL BUILD ============ -->
+  <section class="s">
+    <div class="s__inner s__inner--narrow">
+      <div class="s__eyebrow">Under the hood</div>
+      <h2 class="s__title">Built lean, deployed fast.</h2>
+      <p class="s__lede">
+        What's The Charge is a fully custom web application built with Next.js and deployed on Vercel. The vehicle database covers hundreds of makes and models with real battery capacity and efficiency data. Utility rate data is sourced from public EIA datasets and kept current by state. No third-party calculator API — every formula is written and owned in-house, which means full control over accuracy and UX.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <footer class="foot">
+    <div class="foot__inner">
+      <h2 class="foot__title">Want to see it in action?</h2>
+      <p class="hero__lede" style="text-align:center;max-width:60ch;">
+        Try the live calculator or get in touch to talk through the design and build.
+      </p>
+      <div class="foot__actions">
+        <a href="https://whatsthecharge.com" target="_blank" class="btn btn--primary">Visit whatsthecharge.com</a>
+        <a href="../contact.html" class="btn btn--ghost">Get in touch</a>
+      </div>
+      <p class="foot__meta">© Bedo Studio · whatsthecharge.com · Next.js / Vercel</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -12,6 +12,43 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
+    <style>
+        /* ── Filter bar ── */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        .filter-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            border: 1px solid var(--border, #d1d5db);
+            background: transparent;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            font-family: inherit;
+            line-height: 1;
+        }
+        .filter-btn:hover {
+            border-color: var(--text-primary, #111827);
+            color: var(--text-primary, #111827);
+        }
+        .filter-btn.active {
+            background: var(--text-primary, #111827);
+            border-color: var(--text-primary, #111827);
+            color: #fff;
+        }
+        /* Hide non-matching cards */
+        .case-study-card[data-hidden="true"] {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,9 +80,22 @@
 
         <section class="section" style="padding-top: 0;">
             <div class="container">
-                <div class="grid case-studies-grid">
-                    <!-- Project 1: C3.ai -->
-                    <article class="case-study-card">
+
+                <!-- Filter Bar -->
+                <div class="filter-bar" id="filterBar">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="Enterprise">Enterprise</button>
+                    <button class="filter-btn" data-filter="AI">AI</button>
+                    <button class="filter-btn" data-filter="AI Coded">AI Coded</button>
+                    <button class="filter-btn" data-filter="Design Systems">Design Systems</button>
+                    <button class="filter-btn" data-filter="Product Design">Product Design</button>
+                    <button class="filter-btn" data-filter="Full-Stack">Full-Stack</button>
+                </div>
+
+                <div class="grid case-studies-grid" id="projectsGrid">
+
+                    <!-- C3.ai Overview -->
+                    <article class="case-study-card" data-tags="AI Strategy,Enterprise,AI">
                         <a href="c3-ai.html">
                             <div class="card-image">
                                 <img src="../assets/images/c3-ai-viz.png" alt="C3.ai Platform Data Flow"
@@ -63,8 +113,8 @@
                         </div>
                     </article>
 
-                    <!-- Project 1b: C3.ai AI-First Design System Case Study -->
-                    <article class="case-study-card">
+                    <!-- C3.ai AI-First Design System -->
+                    <article class="case-study-card" data-tags="Design Systems,AI,Enterprise,AI Coded">
                         <a href="c3-ai-first.html">
                             <div class="card-image">
                                 <img src="../assets/images/case-study/c3-ai-first-thumb.jpg" alt="C3.ai AI-First Design System"
@@ -77,14 +127,14 @@
                             <div class="tags">
                                 <span class="tag">Design Systems</span>
                                 <span class="tag">AI-Native UX</span>
-                                <span class="tag">React</span>
+                                <span class="tag">Enterprise</span>
                             </div>
                             <a href="c3-ai-first.html" class="btn btn-link pl-0">Read Case Study</a>
                         </div>
                     </article>
 
-                    <!-- Project 2: Prism Design System -->
-                    <article class="case-study-card">
+                    <!-- Prism Design System -->
+                    <article class="case-study-card" data-tags="Design Systems,Enterprise">
                         <a href="prism-design-system.html">
                             <div class="card-image">
                                 <img src="../assets/images/prism-thumb.png" alt="Prism Design System"
@@ -101,9 +151,9 @@
                             <a href="prism-design-system.html" class="btn btn-link pl-0">Read Case Study</a>
                         </div>
                     </article>
-                    
-                    <!-- Project: What's The Charge -->
-                    <article class="case-study-card">
+
+                    <!-- What's The Charge -->
+                    <article class="case-study-card" data-tags="Product Design,AI Coded,Full-Stack">
                         <a href="whatsthecharge.html">
                             <div class="card-image">
                                 <img src="../assets/images/case-study/wtc-hero.png" alt="What's The Charge EV Calculator"
@@ -115,15 +165,15 @@
                             <p>EV charging cost calculator with auto-detected location, rate plan, and vehicle data. No account required.</p>
                             <div class="tags">
                                 <span class="tag">Product Design</span>
-                                <span class="tag">Next.js</span>
+                                <span class="tag">AI Coded</span>
                                 <span class="tag">Full-Stack</span>
                             </div>
                             <a href="whatsthecharge.html" class="btn btn-link pl-0">Read Case Study</a>
                         </div>
                     </article>
 
-                    <!-- Project 3: No Buy Calculator -->
-                    <article class="case-study-card">
+                    <!-- No Buy Calculator -->
+                    <article class="case-study-card" data-tags="Product Design,Product Strategy,Behavioral UX">
                         <a href="pre-buy-decision-coach-spec.html">
                             <div class="card-image">
                                 <img src="../assets/images/pre-buy-coach-thumb.png" alt="No Buy Calculator"
@@ -140,6 +190,7 @@
                             <a href="pre-buy-decision-coach-spec.html" class="btn btn-link pl-0">View Concept Spec</a>
                         </div>
                     </article>
+
                 </div>
             </div>
         </section>
@@ -169,7 +220,37 @@
             </div>
         </div>
     </footer>
+
     <script src="../assets/js/main.js"></script>
+    <script>
+        // ── Project filter logic ──
+        const filterBar = document.getElementById('filterBar');
+        const cards = document.querySelectorAll('#projectsGrid .case-study-card');
+
+        filterBar.addEventListener('click', function (e) {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+
+            // Update active state
+            filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.removeAttribute('data-hidden');
+                } else {
+                    const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
+                    if (tags.includes(filter)) {
+                        card.removeAttribute('data-hidden');
+                    } else {
+                        card.setAttribute('data-hidden', 'true');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-First UX at C3.ai — Design System Case Study</title>
+  <meta name="description" content="How we rebuilt the C3.ai UX system to make AI features feel native, not bolted on." />
+  <style>
+    :root {
+      --fg: #0a0a0a;
+      --fg-muted: #6c717a;
+      --fg-soft: #949bae;
+      --bg: #ffffff;
+      --bg-page: #fafafa;
+      --bg-soft: #f5f7fc;
+      --bg-code: #f0f3fa;
+      --border: #d8dce8;
+      --border-strong: #bfc5d4;
+      --primary: #2266f0;
+      --primary-soft: #eff4ff;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --content-max: 1120px;
+      --content-narrow: 760px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #f5f5f5;
+        --fg-muted: #a3a3a3;
+        --fg-soft: #6c717a;
+        --bg: #171717;
+        --bg-page: #0a0a0a;
+        --bg-soft: #1f1f23;
+        --bg-code: #1f2230;
+        --border: #2e323b;
+        --border-strong: #434852;
+        --primary: #60a5fa;
+        --primary-soft: #1e3a8a40;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-page);
+      color: var(--fg);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--bg-code);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative;
+      padding: 96px 24px 72px;
+      background:
+        radial-gradient(1200px 600px at 20% 20%, rgba(34, 102, 240, 0.18), transparent 60%),
+        radial-gradient(1000px 500px at 80% 80%, rgba(96, 165, 250, 0.14), transparent 60%),
+        var(--bg-page);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero__brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      color: var(--fg);
+      /* Block-level so the eyebrow pill drops to its own row below
+         rather than crowding the logo on the same line. */
+    }
+    .hero__brand svg { width: 22px; height: 32px; }
+    .hero__brand-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .hero__brand-meta strong {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .hero__brand-meta span {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .hero__eyebrow::before {
+      content: "✦";
+      font-size: 11px;
+    }
+    h1.hero__title {
+      margin: 0 0 24px;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      max-width: 16ch;
+    }
+    .hero__title-accent {
+      color: var(--primary);
+    }
+    .hero__lede {
+      margin: 0;
+      font-size: clamp(17px, 2vw, 20px);
+      color: var(--fg-muted);
+      max-width: 56ch;
+      line-height: 1.5;
+    }
+    .hero__stats {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .stat {
+      padding: 20px 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .stat__value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1;
+    }
+    .stat__label {
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 720px) {
+      .hero__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* ============ SECTION ============ */
+    section.s {
+      padding: 96px 24px;
+    }
+    section.s--soft { background: var(--bg); border-block: 1px solid var(--border); }
+    .s__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+    .s__inner--narrow {
+      max-width: var(--content-narrow);
+      margin: 0 auto;
+    }
+    .s__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .s__title {
+      margin: 0 0 16px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      max-width: 20ch;
+    }
+    .s__lede {
+      margin: 0;
+      font-size: 18px;
+      color: var(--fg-muted);
+      max-width: 56ch;
+      line-height: 1.55;
+    }
+
+    /* ============ SCREENSHOT ============ */
+    .shot {
+      margin-top: 48px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      box-shadow:
+        0 1px 2px rgba(10, 10, 10, 0.04),
+        0 24px 60px -24px rgba(10, 10, 10, 0.18);
+    }
+    .shot__chrome {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+    .shot__dots {
+      display: inline-flex;
+      gap: 6px;
+      margin-right: 8px;
+    }
+    .shot__dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      opacity: 0.6;
+    }
+    .shot__img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .shot__placeholder {
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--fg-soft);
+      font-size: 13px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          var(--bg-soft),
+          var(--bg-soft) 16px,
+          var(--bg) 16px,
+          var(--bg) 32px
+        );
+    }
+    .shot__placeholder strong { color: var(--fg-muted); font-size: 14px; }
+    .shot__caption {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+    .shot__caption strong { color: var(--fg); font-weight: 600; }
+
+    /* ============ ANNOTATION GRID ============ */
+    .annotated {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .annotated { grid-template-columns: 1fr; } }
+    .annotated .shot { margin-top: 0; }
+    .callouts {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .callout {
+      padding: 16px 18px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--primary);
+    }
+    .callout__title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      letter-spacing: -0.005em;
+    }
+    .callout__body {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ============ CARD GRID ============ */
+    .cards {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      padding: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .card__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+    .card__title {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .card__body {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--fg-muted);
+      line-height: 1.55;
+    }
+
+    /* ============ PIPELINE DIAGRAM ============ */
+    .pipeline {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .pipeline__step {
+      padding: 24px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .pipeline__step:last-child { border-right: 0; }
+    .pipeline__num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .pipeline__name {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+    .pipeline__sub {
+      font-size: 11px;
+      color: var(--fg-muted);
+      margin: 0;
+    }
+    @media (max-width: 720px) {
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+      .pipeline__step { border-bottom: 1px solid var(--border); }
+    }
+
+    /* ============ FOOTER ============ */
+    footer.foot {
+      padding: 64px 24px 80px;
+      background: var(--bg-page);
+      border-top: 1px solid var(--border);
+    }
+    .foot__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+    .foot__title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .foot__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn--primary { background: var(--primary); color: white; }
+    .btn--primary:hover { opacity: 0.92; }
+    .btn--ghost { color: var(--fg); border: 1px solid var(--border-strong); }
+    .btn--ghost:hover { background: var(--bg); }
+    .foot__meta {
+      font-size: 12px;
+      color: var(--fg-soft);
+      margin-top: 16px;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container flex-between">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="Jason Bedient Logo" class="site-logo-img">
+        Jason Bedient
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="active">Design</a>
+        <a href="../leadership.html">Leadership</a>
+        <a href="../about.html">About</a>
+        <a href="../blog/index.html">Blog</a>
+        <a href="../videos/index.html">Videos</a>
+        <a href="../contact.html" class="btn btn-outline">Let's Talk</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__brand">
+        <svg viewBox="0 0 32 47" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="c3.ai">
+          <path d="M0 0V3.57028H28.4444V14.2811H7.11111V17.8514H28.4444V28.5623H0V32.1325H32V0H0Z"/>
+          <path d="M24.8889 7.14056H0V24.992H24.8889V21.4217H3.55556V10.7108H24.8889V7.14056Z"/>
+          <path d="M7.11023 39.3219H9.24189C9.17644 38.7399 9.0175 38.2235 8.76507 37.7729C8.51264 37.3223 8.19008 36.9468 7.79741 36.6463C7.41408 36.3365 6.97466 36.1018 6.47914 35.9422C5.99297 35.7826 5.47408 35.7028 4.92246 35.7028C4.15581 35.7028 3.46396 35.8389 2.84689 36.1112C2.23918 36.3835 1.72497 36.759 1.30424 37.2378C0.88352 37.7166 0.560964 38.2799 0.336578 38.9276C0.112192 39.566 0 40.2608 0 41.0118C0 41.7441 0.112192 42.4294 0.336578 43.0678C0.560964 43.6968 0.88352 44.246 1.30424 44.7154C1.72497 45.1848 2.23918 45.5557 2.84689 45.8279C3.46396 46.0908 4.15581 46.2222 4.92246 46.2222C5.53953 46.2222 6.10516 46.1283 6.61938 45.9406C7.1336 45.7528 7.58237 45.4806 7.9657 45.1238C8.34902 44.7671 8.65755 44.3352 8.89129 43.8283C9.12502 43.3213 9.22215 42.8884 9.22215 42.5937H7.09049C7.09049 42.7439 6.87649 43.3448 6.49316 43.7578C6.11919 44.1709 5.59562 44.3775 4.92246 44.3775C4.42695 44.3775 4.00622 44.2836 3.66029 44.0958C3.31437 43.8987 3.03388 43.6405 2.81885 43.3213C2.60381 43.0021 2.44487 42.6453 2.34203 42.251C2.24853 41.8474 2.20179 41.4343 2.20179 41.0118C2.20179 40.5706 2.24853 40.1434 2.34203 39.7303C2.44487 39.3173 2.60381 38.9511 2.81885 38.6319C3.03388 38.3033 3.31437 38.0452 3.66029 37.8574C4.00622 37.6602 4.42695 37.5617 4.92246 37.5617C5.1936 37.5617 5.45071 37.6086 5.69379 37.7025C5.94622 37.787 6.17061 37.909 6.36695 38.0686C6.56328 38.2282 6.7269 38.416 6.85779 38.6319C6.98868 38.8385 7.07283 39.0685 7.11023 39.3219Z"/>
+          <path d="M12.9555 40.1246V41.5329C13.1986 41.5329 13.451 41.5422 13.7128 41.561C13.984 41.5704 14.2317 41.622 14.4561 41.7159C14.6805 41.8004 14.8628 41.9412 15.003 42.1384C15.1526 42.3355 15.2274 42.6219 15.2274 42.9974C15.2274 43.4762 15.0732 43.8564 14.7646 44.1381C14.4561 44.4103 14.0774 44.5464 13.6287 44.5464C13.3388 44.5464 13.0864 44.4948 12.8714 44.3915C12.6657 44.2883 12.4927 44.1521 12.3525 43.9832C12.2122 43.8048 12.1047 43.5982 12.0299 43.3635C11.9551 43.1194 11.9131 42.866 11.9037 42.6031H10.0105C10.0011 43.1758 10.0806 43.6827 10.2489 44.124C10.4265 44.5652 10.6743 44.9407 10.9921 45.2505C11.31 45.551 11.6934 45.781 12.1421 45.9406C12.6002 46.1002 13.1051 46.18 13.6567 46.18C14.1335 46.18 14.5917 46.1096 15.0311 45.9687C15.4705 45.8279 15.8585 45.6214 16.1951 45.3491C16.5317 45.0769 16.7981 44.7389 16.9945 44.3352C17.2002 43.9315 17.303 43.4715 17.303 42.9552C17.303 42.3919 17.1487 41.9084 16.8402 41.5047C16.5317 41.101 16.1063 40.8381 15.564 40.7161V40.6879C16.0221 40.5565 16.3634 40.3077 16.5878 39.9416C16.8215 39.5754 16.9384 39.153 16.9384 38.6742C16.9384 38.2329 16.8402 37.8433 16.6439 37.5053C16.4475 37.1674 16.1904 36.881 15.8725 36.6463C15.564 36.4116 15.2134 36.2379 14.8207 36.1253C14.4281 36.0032 14.0354 35.9422 13.6427 35.9422C13.1378 35.9422 12.6797 36.0267 12.2683 36.1957C11.857 36.3553 11.5017 36.5853 11.2025 36.8857C10.9127 37.1861 10.6836 37.5476 10.5153 37.9701C10.3564 38.3831 10.2676 38.8432 10.2489 39.3501H12.1421C12.1328 38.8432 12.2543 38.4254 12.5068 38.0968C12.7685 37.7588 13.1519 37.5898 13.6567 37.5898C14.0214 37.5898 14.3439 37.7025 14.6244 37.9278C14.9049 38.1531 15.0451 38.477 15.0451 38.8995C15.0451 39.1811 14.975 39.4064 14.8348 39.5754C14.7039 39.7444 14.5309 39.8758 14.3159 39.9697C14.1102 40.0542 13.8858 40.1059 13.6427 40.1246C13.3996 40.1434 13.1706 40.1434 12.9555 40.1246Z"/>
+          <path d="M18.2883 45.9448V43.7761H20.4901V45.9448H18.2883Z"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M21.9713 40.9555C21.9993 40.4861 22.1162 40.0965 22.3219 39.7867C22.5275 39.4768 22.7893 39.2281 23.1072 39.0403C23.4251 38.8525 23.7804 38.7211 24.173 38.646C24.5751 38.5615 24.9771 38.5193 25.3791 38.5193C25.7437 38.5193 26.113 38.5474 26.487 38.6038C26.861 38.6507 27.2022 38.7493 27.5108 38.8995C27.8193 39.0497 28.0717 39.2609 28.2681 39.5332C28.4644 39.7961 28.5626 40.1481 28.5626 40.5893V44.3775C28.5626 44.706 28.5813 45.0205 28.6187 45.321C28.6561 45.6214 28.7215 45.8467 28.815 45.9969H26.7955C26.7581 45.8842 26.7254 45.7716 26.6974 45.6589C26.6787 45.5369 26.6647 45.4148 26.6553 45.2928C26.3374 45.6214 25.9634 45.8514 25.5334 45.9828C25.1033 46.1143 24.6639 46.18 24.2151 46.18C23.8692 46.18 23.5466 46.1377 23.2474 46.0532C22.9483 45.9687 22.6865 45.8373 22.4621 45.6589C22.2377 45.4806 22.0601 45.2552 21.9292 44.983C21.8076 44.7107 21.7469 44.3868 21.7469 44.0113C21.7469 43.5982 21.817 43.2603 21.9572 42.9974C22.1068 42.7251 22.2938 42.5092 22.5182 42.3496C22.7519 42.19 23.0137 42.0727 23.3035 41.9976C23.6027 41.9131 23.9019 41.8474 24.2011 41.8004C24.5003 41.7535 24.7948 41.7159 25.0846 41.6878C25.3744 41.6596 25.6315 41.6173 25.8559 41.561C26.0803 41.5047 26.258 41.4249 26.3888 41.3216C26.5197 41.209 26.5805 41.0494 26.5712 40.8428C26.5712 40.6269 26.5338 40.4579 26.459 40.3359C26.3935 40.2044 26.3 40.1059 26.1785 40.0401C26.0663 39.965 25.9307 39.9181 25.7718 39.8993C25.6222 39.8712 25.4586 39.8571 25.2809 39.8571C24.8883 39.8571 24.5797 39.9416 24.3554 40.1105C24.131 40.2795 24.0001 40.5612 23.9627 40.9555H21.9713ZM26.5712 42.4341C26.487 42.5092 26.3795 42.5702 26.2486 42.6172C26.1271 42.6547 25.9915 42.6876 25.8419 42.7158C25.7017 42.7439 25.5521 42.7674 25.3931 42.7862C25.2342 42.8049 25.0753 42.8284 24.9163 42.8566C24.7667 42.8847 24.6171 42.9223 24.4675 42.9692C24.3273 43.0162 24.2011 43.0819 24.0889 43.1664C23.986 43.2415 23.9019 43.3401 23.8365 43.4621C23.771 43.5842 23.7383 43.7391 23.7383 43.9268C23.7383 44.1052 23.771 44.2554 23.8365 44.3775C23.9019 44.4995 23.9907 44.5981 24.1029 44.6732C24.2151 44.7389 24.346 44.7858 24.4956 44.814C24.6452 44.8422 24.7994 44.8562 24.9584 44.8562C25.3511 44.8562 25.6549 44.7905 25.87 44.6591C26.085 44.5277 26.2439 44.3728 26.3468 44.1944C26.4496 44.0066 26.5104 43.8189 26.5291 43.6311C26.5571 43.4433 26.5712 43.2931 26.5712 43.1805V42.4341Z"/>
+          <path d="M32 36.0987V37.7463H30.0086V36.0987H32Z"/>
+          <path d="M30.0086 45.9969V38.8207H32V45.9969H30.0086Z"/>
+        </svg>
+        <span class="hero__brand-meta">
+          <strong>Design System</strong>
+          <span>V1 — React/Shadcn</span>
+        </span>
+      </div>
+
+      <span class="hero__eyebrow">AI-First UX at C3.ai</span>
+      <h1 class="hero__title">
+        A UX system built for <span class="hero__title-accent">AI-native</span> enterprise apps.
+      </h1>
+      <p class="hero__lede">
+        We rebuilt the C3.ai design system from the ground up so AI features feel native, not bolted on. One token source, one component library, every pattern designed for AI signal — alerts, search, suggestions, assistants — at enterprise scale.
+      </p>
+
+      <div class="hero__stats">
+        <div class="stat"><div class="stat__value">40</div><div class="stat__label">React primitives</div></div>
+        <div class="stat"><div class="stat__value">8</div><div class="stat__label">Page templates</div></div>
+        <div class="stat"><div class="stat__value">64+</div><div class="stat__label">Documented patterns</div></div>
+        <div class="stat"><div class="stat__value">100%</div><div class="stat__label">Token-driven</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY THIS MATTERS ============ -->
+  <section class="s">
+    <div class="s__inner s__inner--narrow">
+      <div class="s__eyebrow">Why this matters</div>
+      <h2 class="s__title">Traditional enterprise UX wasn't built for AI.</h2>
+      <p class="s__lede">
+        Enterprise design systems were optimized for forms, tables, and reports — humans entering data, humans reading it back. Our customers now lean on AI for every step: detecting anomalies, surfacing insights, drafting documents, answering questions. The interface needs to communicate <em>signal vs. noise</em>, <em>confidence</em>, <em>provenance</em>, and <em>next best action</em> — natively, at every layer of the stack.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE FOUNDATION ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">The foundation</div>
+      <h2 class="s__title">One source of truth — Figma → tokens → React.</h2>
+      <p class="s__lede">
+        Every color, spacing value, radius, and shadow lives in Figma's Mode collection and flows downstream through a single generator. Designers and engineers ship against the same atoms. Dark mode, accessibility, and density tweaks happen once, propagate everywhere.
+      </p>
+
+      <div class="pipeline">
+        <div class="pipeline__step">
+          <div class="pipeline__num">1</div>
+          <p class="pipeline__name">Figma</p>
+          <p class="pipeline__sub">Mode collection</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">2</div>
+          <p class="pipeline__name">tokens.json</p>
+          <p class="pipeline__sub">extracted spec</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">3</div>
+          <p class="pipeline__name">tokens.css</p>
+          <p class="pipeline__sub">--theme-* vars</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">4</div>
+          <p class="pipeline__name">Tailwind preset</p>
+          <p class="pipeline__sub">semantic classes</p>
+        </div>
+        <div class="pipeline__step">
+          <div class="pipeline__num">5</div>
+          <p class="pipeline__name">React + Radix</p>
+          <p class="pipeline__sub">40 primitives</p>
+        </div>
+      </div>
+
+      <div class="shot">
+        <div class="shot__chrome">
+          <div class="shot__dots"><span></span><span></span><span></span></div>
+          <span>C3 Design System · Docs</span>
+        </div>
+        <img class="shot__img" src="../assets/images/case-study/docs-home.png" alt="C3 Design System docs home — sidebar with c3.ai logo, component catalog grid" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
+        <div class="shot__placeholder" style="display:none">
+          <strong>case-study/docs-home.png</strong>
+          <span>Docs home — branded sidebar with c3.ai logo + component catalog</span>
+        </div>
+        <div class="shot__caption">
+          <strong>Live documentation site.</strong> Branded sidebar with the c3.ai mark, search across every primitive and pattern, and a catalog that mirrors the Figma file 1:1. Engineers and designers see the same thing.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ IN PRACTICE — ALERTS TRIAGE ============ -->
+  <section class="s">
+    <div class="s__inner">
+      <div class="s__eyebrow">In practice</div>
+      <h2 class="s__title">A reliability engineer triages 1,174 AI-detected alerts.</h2>
+      <p class="s__lede">
+        The Alerts page in C3 Reliability — rebuilt entirely from our new primitives. NavRail for module switching, PageHeader for context, MetricCards with sparkline trends for at-a-glance state, a DataGrid with column-level filters and faceted chips for fast triage. Every AI signal has a path to action in three clicks or fewer.
+      </p>
+
+      <div class="annotated">
+        <div class="shot">
+          <div class="shot__chrome">
+            <div class="shot__dots"><span></span><span></span><span></span></div>
+            <span>C3 Reliability · Alerts</span>
+          </div>
+          <img class="shot__img" src="../assets/images/case-study/alerts-listpage.png" alt="Alerts page — NavRail, PageHeader with tabs, three MetricCards with sparklines, DataGrid with True/False Positive labels" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
+          <div class="shot__placeholder" style="display:none">
+            <strong>case-study/alerts-listpage.png</strong>
+            <span>Alerts ListPage — NavRail + 3 MetricCards + DataGrid</span>
+          </div>
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3 class="callout__title">Gen AI is first-class</h3>
+            <p class="callout__body">A dedicated "Gen AI" item leads the NavRail with a Sparkles icon — AI capabilities aren't buried in a settings menu.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Signal, not noise</h3>
+            <p class="callout__body">1,174 AI-detected alerts are surfaced as a delta + sparkline trend. The user sees direction and magnitude before reading a single row.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Inline filtering, fast triage</h3>
+            <p class="callout__body">Faceted chips for Status and Importance live in the toolbar; per-column filters live in the header row. No separate filter sidebar to context-switch through.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">AI feedback loop</h3>
+            <p class="callout__body">An Alert Category column captures True Positive vs. False Positive — the labels feed back into the model, closing the loop between user judgement and AI training.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPONENTS FOR AI ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">Components built for AI</div>
+      <h2 class="s__title">Patterns that make AI features feel native.</h2>
+      <p class="s__lede">
+        Not retrofitted. Designed in from the first commit, validated against real C3 products.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card__icon">✦</div>
+          <h3 class="card__title">AIChat drawer</h3>
+          <p class="card__body">Right-docked assistant pattern. Title bar, suggestion pills, message bubbles, expandable "thinking" steps, follow-up actions, prompt input.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">📈</div>
+          <h3 class="card__title">MetricCard with sparkline</h3>
+          <p class="card__body">Header, value, tone-aware delta, optional sparkline, caption. KPI tiles that read at a glance and trend at a longer look.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🏷</div>
+          <h3 class="card__title">Status & confidence badges</h3>
+          <p class="card__body">Tone variants for success/warning/danger plus muted/info for neutral state. Outline + soft + solid appearances for different emphasis levels.</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🔍</div>
+          <h3 class="card__title">DataGrid faceted filters</h3>
+          <p class="card__body">Toolbar chips, inline header-row filters, global search, active-filter pills. Built for triaging hundreds of AI-flagged items quickly.</p>
+        </div>
+      </div>
+
+      <div class="shot">
+        <div class="shot__chrome">
+          <div class="shot__dots"><span></span><span></span><span></span></div>
+          <span>AIChat · C3 AI Assistant drawer</span>
+        </div>
+        <img class="shot__img" src="../assets/images/case-study/ai-chat.png" alt="C3 AI Assistant drawer — greeting, user prompt, response with thinking steps and suggested actions" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
+        <div class="shot__placeholder" style="display:none">
+          <strong>case-study/ai-chat.png</strong>
+          <span>AIChat — right-docked assistant pattern</span>
+        </div>
+        <div class="shot__caption">
+          <strong>The AIChat primitive.</strong> Greeting, user prompt, an AI response with expandable thinking steps, and three suggested next actions. Drops into any product page; state-driven, no styling decisions for the consuming team.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NAVIGATION FOR DEPTH ============ -->
+  <section class="s">
+    <div class="s__inner">
+      <div class="s__eyebrow">Navigation for depth</div>
+      <h2 class="s__title">Hierarchical nav for the deep enterprise products our customers run.</h2>
+      <p class="s__lede">
+        Two-rail app shell — NavRail for module switching, Sidebar for in-module hierarchy. Multi-level nesting, collapsible groups, sticky footer for Settings. The kind of navigation you need when your product has thousands of assets and tens of thousands of work orders.
+      </p>
+
+      <div class="shot">
+        <div class="shot__chrome">
+          <div class="shot__dots"><span></span><span></span><span></span></div>
+          <span>Sidebar · hierarchical pattern</span>
+        </div>
+        <img class="shot__img" src="../assets/images/case-study/sidebar-hierarchy.png" alt="Sidebar with NavRail to its left, expanded multi-level menu showing Assets → Compressors / Pumps / Sensors → Pressure / Temperature" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
+        <div class="shot__placeholder" style="display:none">
+          <strong>case-study/sidebar-hierarchy.png</strong>
+          <span>NavRail + Sidebar — multi-level nav</span>
+        </div>
+        <div class="shot__caption">
+          <strong>The two-rail shell.</strong> NavRail on the far left (always visible icon nav), Sidebar next to it with hierarchical sub-menus that expand inline. Sidebar collapses to a 40 px thin bar when you need more canvas — NavRail still gives you primary nav.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEMPLATES README — process / acceleration ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">Built for speed</div>
+      <h2 class="s__title">Every pattern decision, in one place.</h2>
+      <p class="s__lede">
+        Every cross-template decision lives in one <code>.md</code> — app-shell layout, sticky PageHeader, MetricCard KPI pattern, DataGrid filter placement, surface tokens. Paired with <code>.cursor/skills/*/SKILL.md</code> files, designers, engineers, and AI coding agents ship from a single playbook.
+      </p>
+
+      <div class="annotated">
+        <div class="shot">
+          <div class="shot__chrome">
+            <div class="shot__dots"><span></span><span></span><span></span></div>
+            <span>Templates README · cross-template conventions</span>
+          </div>
+          <img class="shot__img" src="../assets/images/case-study/templates-readme.png" alt="Templates README page showing the app-shell composition diagram and PageHeader behavior rules" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
+          <div class="shot__placeholder" style="display:none">
+            <strong>case-study/templates-readme.png</strong>
+            <span>Templates README — cross-cutting layout & behavior conventions</span>
+          </div>
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3 class="callout__title">Day-one onboarding</h3>
+            <p class="callout__body">New engineers ship their first page following one doc, not by spelunking through a year of merged PRs.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Single source of truth</h3>
+            <p class="callout__body">Mirrored in <code>TEMPLATE-CATALOG.md</code> (for GitHub readers) and rendered in-app at <code>#/templates/readme</code>. Designers + engineers see the same thing.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Decisions made once</h3>
+            <p class="callout__body">"Should this PageHeader be sticky?" "Where does the filter panel go?" Already decided. Teams stop re-litigating per project.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Faster, more consistent ship</h3>
+            <p class="callout__body">New templates layer on top of the README; new components extend the existing vocabulary. The system gets <em>smaller</em> to learn as it grows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <footer class="foot">
+    <div class="foot__inner">
+      <h2 class="foot__title">Want to know more about how this was achieved?</h2>
+      <p class="hero__lede" style="text-align:center;max-width:60ch;">
+        Get in touch.
+      </p>
+      <p class="foot__meta">© C3.ai · Design System V1 — React/Shadcn</p>
+    </div>
+  </footer>
+
+</body>
+</html>
+

@@ -30,11 +30,20 @@ async function sync() {
             const published = entryXml.match(/<published>(.*?)<\/published>/)?.[1];
 
             if (videoId) {
-                entries.push({
-                    title,
-                    videoId,
-                    published: published ? new Date(published).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent'
-                });
+                // Check if this video is a Short by inspecting curl redirect
+                const checkCmd = `curl -s -o /dev/null -w "%{url_effective}" -L -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "https://www.youtube.com/shorts/${videoId}"`;
+                const finalUrl = execSync(checkCmd).toString().trim();
+                
+                if (finalUrl.includes('/watch')) {
+                    console.log(`Adding long-form video: ${title}`);
+                    entries.push({
+                        title,
+                        videoId,
+                        published: published ? new Date(published).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent'
+                    });
+                } else {
+                    console.log(`Skipping Short: ${title}`);
+                }
             }
         }
 

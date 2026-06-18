@@ -1,0 +1,527 @@
+/* ==========================================
+   CSS Design System (gallery/pop Mood)
+   ========================================== */
+
+:root {
+  --color-ground: #ffffff;
+  --color-text-main: #111111;
+  --color-text-muted: #888888;
+  --color-accent-red: #e21a1a;
+  --color-accent-blue: #1d428a;
+  
+  --color-bg-muted: #f3f4f6;
+  --color-border: #f3f4f6;
+  
+  --color-badge-red-bg: rgba(226, 26, 26, 0.08);
+  --color-badge-blue-bg: rgba(29, 66, 138, 0.08);
+  
+  --transition-smooth: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-ground);
+  color: var(--color-text-main);
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* App Header */
+.app-header {
+  border-bottom: 1px solid var(--color-border);
+  padding: 40px 60px;
+}
+
+.header-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo-image {
+  background-image: url('https://app.paper.design/file-assets/01KT76B2KJ2SHTX9NNJNV390VC/01KT7BETNZGWV0CS788ZBESFB2.png');
+  background-position: 50%;
+  background-size: cover;
+  width: 114px;
+  height: 68px;
+  flex-shrink: 0;
+}
+
+.brand-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.app-title {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.app-subtitle {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.action-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.score-badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-bg-muted);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.team-knicks-label {
+  color: var(--color-accent-red);
+}
+
+.team-spurs-label {
+  color: var(--color-accent-blue);
+}
+
+.series-score {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--color-text-main);
+}
+
+.btn-submit {
+  background-color: var(--color-accent-red);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+}
+
+.btn-submit:hover {
+  background-color: #c11212;
+  transform: translateY(-1px);
+}
+
+/* Layout */
+.main-layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+}
+
+.sidebar-column {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  flex-shrink: 0;
+}
+
+.content-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Sections */
+.cardless-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cardless-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.section-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Matchup Stats Visual */
+.matchup-visual {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.logo-badge {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--color-bg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+.logo-knicks {
+  background-image: url('https://app.paper.design/file-assets/01KT76B2KJ2SHTX9NNJNV390VC/01KT7Q9VHP3AFK61772P8DRQCV.png');
+  background-size: 100px auto;
+}
+
+.logo-spurs {
+  background-image: url('https://app.paper.design/file-assets/01KT76B2KJ2SHTX9NNJNV390VC/01KT7QB4JM4W21J4R13DQ7J3MR.png');
+  background-size: 110px auto;
+}
+
+.team-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-text-main);
+}
+
+.stat-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.stat-value {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+
+.matchup-vs {
+  font-weight: 800;
+  font-size: 16px;
+  color: #cccccc;
+  padding-top: 20px;
+}
+
+/* Leaderboard List */
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.leaderboard-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.leaderboard-item:last-child {
+  border-bottom: none;
+}
+
+.rank-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.rank-num {
+  font-weight: 800;
+  font-size: 14px;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.rank-num.top-rank {
+  color: var(--color-accent-red);
+}
+
+.rank-num.secondary-rank {
+  color: #555555;
+}
+
+.rank-num.other-rank {
+  color: var(--color-text-muted);
+}
+
+.rank-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rank-name {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.rank-pick-sub {
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+.rank-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.rank-pts {
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.rank-streak {
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+/* Filter Controls */
+.filter-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.filter-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: var(--font-stack);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.filter-btn:hover {
+  background-color: var(--color-bg-muted);
+  border-color: #cccccc;
+}
+
+.filter-btn.active {
+  background-color: var(--color-text-main);
+  color: #ffffff;
+  border-color: var(--color-text-main);
+}
+
+/* Table styling */
+.picks-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.table-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 24px;
+}
+
+.table-header {
+  border-bottom: 2px solid var(--color-text-main);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+}
+
+/* Columns */
+.col-name {
+  width: 140px;
+  flex-shrink: 0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-pick {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.col-length {
+  width: 110px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.col-ppg {
+  width: 140px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.col-notes {
+  flex: 1;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+/* Badges */
+.pick-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.badge-NYK, .badge-Knicks {
+  color: var(--color-accent-red);
+  background-color: var(--color-badge-red-bg);
+}
+
+.badge-SAS, .badge-Spurs {
+  color: var(--color-accent-blue);
+  background-color: var(--color-badge-blue-bg);
+}
+
+/* Placeholders & Footers */
+.loading-placeholder {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.app-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 40px 60px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .main-layout {
+    flex-direction: column;
+    padding: 30px;
+    gap: 40px;
+  }
+  .sidebar-column {
+    width: 100%;
+  }
+  .app-header {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .action-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .app-header {
+    padding: 20px;
+  }
+  .main-layout {
+    padding: 20px;
+  }
+  /* Table transforms to cards on small mobile */
+  .table-header {
+    display: none;
+  }
+  .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px 0;
+  }
+  .col-name, .col-pick, .col-length, .col-ppg, .col-notes {
+    width: 100%;
+  }
+  .col-name::before {
+    content: "Name: ";
+    color: var(--color-text-muted);
+    font-size: 12px;
+    font-weight: 500;
+  }
+}

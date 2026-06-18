@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finals Picks Tracker — Knicks vs. Spurs</title>
+  <meta name="description" content="Track your friends' picks for the 2026 NBA Finals between the Knicks and Spurs. View leaderboards, matchup statistics, and streak rankings.">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-image"></div>
+      <div class="brand-group">
+        <h1 id="app-title" class="app-title">2026 NBA Finals</h1>
+        <p class="app-subtitle">Knicks vs. Spurs — Who takes the championship?</p>
+      </div>
+      <div class="action-group">
+        <div id="live-series-score" class="score-badge">
+          <span class="team-knicks-label">Knicks</span>
+          <span class="series-score">0 - 0</span>
+          <span class="team-spurs-label">Spurs</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-layout">
+    <!-- Left Column: Matchup Stats & Leaderboard -->
+    <aside class="sidebar-column">
+      
+      <!-- Matchup Card -->
+      <section class="cardless-section" aria-labelledby="matchup-header">
+        <h2 id="matchup-header" class="section-title">Matchup Stats</h2>
+        <div class="matchup-visual">
+          <div class="team-block team-knicks">
+            <div class="logo-badge logo-knicks">NYK</div>
+            <h3 class="team-name">Knicks</h3>
+            <span class="stat-label">Avg Predicted PPG</span>
+            <span id="knicks-avg-ppg" class="stat-value">0.0</span>
+          </div>
+          <div class="matchup-vs">VS</div>
+          <div class="team-block team-spurs">
+            <div class="logo-badge logo-spurs">SAS</div>
+            <h3 class="team-name">Spurs</h3>
+            <span class="stat-label">Avg Predicted PPG</span>
+            <span id="spurs-avg-ppg" class="stat-value">0.0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Leaderboard Section -->
+      <section class="cardless-section" aria-labelledby="leaderboard-header">
+        <h2 id="leaderboard-header" class="section-title">Leaderboard Standings</h2>
+        <div id="leaderboard-list" class="leaderboard-list">
+          <!-- Standings injected dynamically -->
+          <div class="loading-placeholder">Loading standings...</div>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- Right Column: Interactive Picks List -->
+    <section class="content-column" aria-labelledby="table-header">
+      <div class="section-header-row">
+        <h2 id="table-header" class="section-title">People's Picks</h2>
+        
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+          <button id="filter-all" class="filter-btn active" data-filter="all">All</button>
+          <button id="filter-knicks" class="filter-btn" data-filter="Knicks">Knicks Picks</button>
+          <button id="filter-spurs" class="filter-btn" data-filter="Spurs">Spurs Picks</button>
+        </div>
+      </div>
+
+      <!-- Picks Table -->
+      <div class="picks-table-container">
+        <!-- Table Header -->
+        <div class="table-row table-header">
+          <div class="col-name">Name</div>
+          <div class="col-pick">Pick</div>
+          <div class="col-length">Series Length</div>
+          <div class="col-ppg">Predicted PPG</div>
+          <div class="col-notes">Notes</div>
+        </div>
+        
+        <!-- Table Body -->
+        <div id="picks-table-body" class="table-body">
+          <div class="loading-placeholder">Loading picks...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 Finals Picks Tracker. Synced with Notion.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

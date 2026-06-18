@@ -14,9 +14,9 @@ async function sync() {
     console.log(`Fetching latest videos from YouTube channel: ${CHANNEL_ID}...`);
 
     try {
-        const response = await fetch(FEED_URL);
-        if (!response.ok) throw new Error(`Failed to fetch feed: ${response.statusText}`);
-        const xml = await response.text();
+        const { execSync } = require('child_process');
+        const curlCmd = `curl -s -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -H "Accept: text/xml" "${FEED_URL}"`;
+        const xml = execSync(curlCmd).toString();
 
         // Very basic XML parsing using Regex to avoid dependencies
         const entries = [];
@@ -69,9 +69,9 @@ async function sync() {
                         </div>
                     </article>`).join('\n');
 
-        // Regex to find the video grid container and replace its content
-        const gridRegex = /(<div class="grid video-list-grid">)([\s\S]*?)(<\/div>)/;
-        const updatedContent = indexContent.replace(gridRegex, `$1\n${gridContent}\n                $3`);
+        // Regex to find the video grid content between start/end comments and replace it
+        const feedRegex = /(<!-- YOUTUBE-FEED-START -->)([\s\S]*?)(<!-- YOUTUBE-FEED-END -->)/;
+        const updatedContent = indexContent.replace(feedRegex, (match, p1, p2, p3) => `${p1}\n${gridContent}\n                    ${p3}`);
 
         fs.writeFileSync(VIDEOS_INDEX_PATH, updatedContent);
         console.log('Sync complete!');

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 760" width="1120" height="760" fill="none">
+  <defs>
+    <linearGradient id="resBg" x1="0" y1="0" x2="1120" y2="760" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#071018"/>
+      <stop offset="100%" stop-color="#0a1620"/>
+    </linearGradient>
+    <linearGradient id="estCard" x1="0" y1="0" x2="1000" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0b222e"/>
+      <stop offset="100%" stop-color="#081822"/>
+    </linearGradient>
+    <radialGradient id="topGlow" cx="50%" cy="15%" r="55%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1120" height="760" fill="url(#resBg)"/>
+  <rect width="1120" height="760" fill="url(#topGlow)"/>
+
+  <!-- Header + Shareable URL Pill -->
+  <g transform="translate(56, 48)">
+    <text x="0" y="30" fill="#f8fafc" font-family="Inter, -apple-system, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.6">Charging Results</text>
+    <text x="0" y="56" fill="#94a3b8" font-family="Inter, -apple-system, sans-serif" font-size="14" font-weight="500">2025 Rivian R1S Dual Max · California Off-Peak ($0.24/kWh) · Level 2 (11.5 kW)</text>
+
+    <!-- Shareable Link Badge -->
+    <rect x="748" y="6" width="260" height="38" rx="10" fill="#0d2230" stroke="#00e5ff" stroke-opacity="0.35" stroke-width="1.2"/>
+    <text x="878" y="30" text-anchor="middle" fill="#67e8f9" font-family="Inter, -apple-system, sans-serif" font-size="13" font-weight="600">🔗 Shareable Setup URL</text>
+  </g>
+
+  <!-- Battery Detected Strip -->
+  <g transform="translate(56, 128)">
+    <rect x="0" y="0" width="1008" height="82" rx="14" fill="#0a2432" stroke="#00e5ff" stroke-opacity="0.35" stroke-width="1.2"/>
+    <rect x="26" y="29" width="34" height="22" rx="4" stroke="#00e5ff" stroke-width="2.2"/>
+    <rect x="31" y="34" width="19" height="12" rx="2" fill="#00e5ff"/>
+    <rect x="62" y="35" width="3.5" height="10" rx="1.5" fill="#00e5ff"/>
+    <text x="84" y="33" fill="#67e8f9" font-family="Inter, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">BATTERY DETECTED (USABLE)</text>
+    <text x="84" y="61" fill="#ffffff" font-family="Inter, sans-serif" font-size="24" font-weight="800">135.0 kWh</text>
+
+    <!-- Charge Bar -->
+    <g transform="translate(520, 20)">
+      <text x="0" y="14" fill="#94a3b8" font-family="Inter, sans-serif" font-size="12" font-weight="600">20% Current → 85% Target</text>
+      <text x="456" y="14" text-anchor="end" fill="#00e5ff" font-family="Inter, sans-serif" font-size="12" font-weight="700">+265 mi Range Added</text>
+      <rect x="0" y="25" width="456" height="12" rx="6" fill="#06141c"/>
+      <rect x="0" y="25" width="91" height="12" rx="6" fill="#334155"/>
+      <rect x="85" y="25" width="302" height="12" rx="6" fill="#00e5ff"/>
+    </g>
+  </g>
+
+  <!-- Primary Charging Estimate Card -->
+  <g transform="translate(56, 234)">
+    <rect x="0" y="0" width="1008" height="264" rx="18" fill="url(#estCard)" stroke="#00e5ff" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="34" y="38" fill="#94a3b8" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">CHARGING ESTIMATE</text>
+    <text x="974" y="38" text-anchor="end" fill="#64748b" font-family="Inter, sans-serif" font-size="12" font-weight="500">Includes ~8% Level 2 charging loss</text>
+
+    <!-- 3 Big Stat Tiles -->
+    <g transform="translate(34, 62)">
+      <rect x="0" y="0" width="296" height="172" rx="14" fill="#06131b" stroke="#163547"/>
+      <rect x="124" y="20" width="48" height="48" rx="12" fill="#0a2d3d"/>
+      <path d="M150 32L140 46H148L146 56L156 42H148L150 32Z" fill="#00e5ff"/>
+      <text x="148" y="118" text-anchor="middle" fill="#00e5ff" font-family="Inter, sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5">87.8</text>
+      <text x="148" y="146" text-anchor="middle" fill="#94a3b8" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">KWH NEEDED</text>
+    </g>
+
+    <g transform="translate(356, 62)">
+      <rect x="0" y="0" width="296" height="172" rx="14" fill="#06131b" stroke="#163547"/>
+      <rect x="124" y="20" width="48" height="48" rx="12" fill="#0a2d3d"/>
+      <circle cx="148" cy="44" r="12" stroke="#00e5ff" stroke-width="2.4"/>
+      <path d="M148 37V44L153 47" stroke="#00e5ff" stroke-width="2.4" stroke-linecap="round"/>
+      <text x="148" y="118" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5">7.6</text>
+      <text x="148" y="146" text-anchor="middle" fill="#94a3b8" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">HOURS (LEVEL 2)</text>
+    </g>
+
+    <g transform="translate(678, 62)">
+      <rect x="0" y="0" width="296" height="172" rx="14" fill="#092938" stroke="#00e5ff" stroke-opacity="0.5" stroke-width="1.2"/>
+      <rect x="124" y="20" width="48" height="48" rx="12" fill="#0d3d52"/>
+      <text x="148" y="52" text-anchor="middle" fill="#00e5ff" font-family="Inter, sans-serif" font-size="24" font-weight="800">$</text>
+      <text x="148" y="118" text-anchor="middle" fill="#00e5ff" font-family="Inter, sans-serif" font-size="46" font-weight="800" letter-spacing="-1.5">$21.07</text>
+      <text x="148" y="146" text-anchor="middle" fill="#67e8f9" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">EST. SESSION COST</text>
+    </g>
+  </g>
+
+  <!-- True Cost & Gas Comparison Cards -->
+  <g transform="translate(56, 524)">
+    <!-- Card 1: Cost Breakdown -->
+    <rect x="0" y="0" width="492" height="184" rx="16" fill="#0b1822" stroke="#1c3344" stroke-width="1.2"/>
+    <text x="28" y="36" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11" font-weight="700" letter-spacing="1.3">TRUE COST BREAKDOWN</text>
+
+    <text x="28" y="76" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14" font-weight="500">Full Charge (0% → 100%)</text>
+    <text x="464" y="76" text-anchor="end" fill="#f8fafc" font-family="Inter, sans-serif" font-size="15" font-weight="700">$32.40</text>
+    <line x1="28" y1="92" x2="464" y2="92" stroke="#162938"/>
+
+    <text x="28" y="120" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14" font-weight="500">Cost per Mile Driven</text>
+    <text x="464" y="120" text-anchor="end" fill="#00e5ff" font-family="Inter, sans-serif" font-size="15" font-weight="700">$0.079 / mi</text>
+    <line x1="28" y1="136" x2="464" y2="136" stroke="#162938"/>
+
+    <text x="28" y="164" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14" font-weight="500">Est. Monthly Home Charging (1,000 mi)</text>
+    <text x="464" y="164" text-anchor="end" fill="#f8fafc" font-family="Inter, sans-serif" font-size="15" font-weight="700">$79.00 / mo</text>
+
+    <!-- Card 2: Gas Savings Comparison -->
+    <g transform="translate(516, 0)">
+      <rect x="0" y="0" width="492" height="184" rx="16" fill="#07221f" stroke="#10b981" stroke-opacity="0.4" stroke-width="1.2"/>
+      <text x="28" y="36" fill="#6ee7b7" font-family="Inter, sans-serif" font-size="11" font-weight="700" letter-spacing="1.3">GAS EQUIVALENT COMPARISON (CA AVG $4.85/GAL)</text>
+
+      <text x="28" y="84" fill="#34d399" font-family="Inter, sans-serif" font-size="38" font-weight="800" letter-spacing="-1">Saves $38.40</text>
+      <text x="278" y="82" fill="#a7f3d0" font-family="Inter, sans-serif" font-size="14" font-weight="600">per charge vs. 22 MPG SUV</text>
+
+      <rect x="28" y="106" width="436" height="54" rx="10" fill="#051816" stroke="#0f3d36"/>
+      <text x="46" y="129" fill="#94a3b8" font-family="Inter, sans-serif" font-size="12" font-weight="600">EQUIVALENT FUEL EFFICIENCY</text>
+      <text x="46" y="148" fill="#ffffff" font-family="Inter, sans-serif" font-size="15" font-weight="700">61 MPGe cost equivalent · ~$1,680/yr saved</text>
+    </g>
+  </g>
+</svg>

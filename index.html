@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 </head>
 
@@ -34,21 +34,47 @@
     </header>
 
     <main>
-        <section class="hero section">
+        <section class="hero hero--home section">
             <div class="container">
-                <h1 class="hero-title">Designing the Frontier of Enterprise AI</h1>
-                <p class="hero-subtitle">Design Director at C3 AI building high-stakes enterprise intelligence. I lead teams creating complex AI products and leverage AI natively to push the boundaries of design craft.</p>
+                <div class="hero-eyebrow">
+                    <span class="hero-eyebrow-dot"></span>
+                    Design Director · C3 AI
+                </div>
+                <h1 class="hero-title">Designing the Frontier of <span class="hero-accent">Enterprise AI</span>.</h1>
+                <p class="hero-subtitle">I lead teams building high-stakes enterprise intelligence and AI-native design systems—combining executive product strategy with hands-on AI prototyping and full-stack craft.</p>
                 <div class="hero-actions">
-                    <a href="design/index.html" class="btn btn-default">View Design</a>
+                    <a href="design/index.html" class="btn btn-default" style="height: 2.75rem; padding: 0 1.35rem;">Explore Selected Work &rarr;</a>
+                    <a href="design/ai-practice.html" class="btn btn-outline" style="height: 2.75rem; padding: 0 1.35rem;">AI Design Practice</a>
+                </div>
+                <div class="hero-metrics">
+                    <div>
+                        <div class="hero-metric-value">Enterprise AI &amp; Agents</div>
+                        <p class="hero-metric-label">Human-in-the-loop workflows at scale</p>
+                    </div>
+                    <div>
+                        <div class="hero-metric-value">AI-First Design Systems</div>
+                        <p class="hero-metric-label">Tokenized, code-connected component libraries</p>
+                    </div>
+                    <div>
+                        <div class="hero-metric-value">Full-Stack Prototyping</div>
+                        <p class="hero-metric-label">From Figma to deployed apps with Claude &amp; Next.js</p>
+                    </div>
+                    <div>
+                        <div class="hero-metric-value">15+ Years Leadership</div>
+                        <p class="hero-metric-label">C3 AI · Omnissa · VMware · MobileIron</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="section work-preview">
+        <section class="section work-preview" style="padding-top: 4rem; padding-bottom: 4rem;">
             <div class="container">
-                <div class="flex-between section-header">
-                    <h2>Recent Projects</h2>
-                    <a href="design/index.html" class="view-all">View All Design &rarr;</a>
+                <div class="flex-between section-header" style="margin-top: 0; margin-bottom: 2rem;">
+                    <div>
+                        <span class="card-eyebrow">Selected Case Studies</span>
+                        <h2 style="margin-bottom: 0;">Recent Projects</h2>
+                    </div>
+                    <a href="design/index.html" class="view-all" style="font-weight: 500; font-size: 0.9375rem;">View All Design &rarr;</a>
                 </div>
                 <div class="grid case-studies-grid">
                     <!-- Featured: C3.ai AI-First Design System -->
@@ -60,75 +86,89 @@
                             </div>
                         </a>
                         <div class="card-content">
+                            <span class="card-eyebrow">Enterprise Design System · C3 AI</span>
                             <h3>C3.ai — AI-First Design System</h3>
-                            <p>Rebuilt the C3.ai UX system from the ground up so AI features feel native, not bolted on.</p>
+                            <p>Rebuilt the C3.ai UX system and documentation platform from the ground up so agentic AI features feel native, not bolted on.</p>
                             <div class="tags">
                                 <span class="tag">Design Systems</span>
                                 <span class="tag">Enterprise</span>
-                                <span class="tag">AI</span>
+                                <span class="tag">AI-Native UX</span>
                             </div>
-                            <a href="design/c3-ai-first.html" class="btn btn-link pl-0">Read Case Study</a>
+                            <a href="design/c3-ai-first.html" class="btn btn-link pl-0">Read Case Study &rarr;</a>
                         </div>
                     </article>
                     <!-- Featured: What's The Charge -->
                     <article class="case-study-card">
                         <a href="design/whatsthecharge.html">
                             <div class="card-image">
-                                <img src="assets/images/case-study/wtc-hero.png" alt="What's The Charge EV Calculator"
+                                <img src="assets/images/case-study/wtc-thumb.svg" alt="What's The Charge EV Calculator"
                                     style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                         </a>
                         <div class="card-content">
+                            <span class="card-eyebrow" style="color: #0097a7;">AI-Coded Product · Full-Stack</span>
                             <h3>What's The Charge</h3>
-                            <p>EV charging cost calculator with auto-detected location, rate plan, and vehicle data. No account required.</p>
+                            <p>Zero-friction EV charging cost calculator with auto-detected state utility rates, vehicle battery specs, and gas savings comparison in under 10 seconds.</p>
                             <div class="tags">
                                 <span class="tag">Product Design</span>
                                 <span class="tag">AI Coded</span>
-                                <span class="tag">Full-Stack</span>
+                                <span class="tag">Next.js</span>
                             </div>
-                            <a href="design/whatsthecharge.html" class="btn btn-link pl-0">Read Case Study</a>
+                            <a href="design/whatsthecharge.html" class="btn btn-link pl-0">Read Case Study &rarr;</a>
                         </div>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section class="section" style="background: #0a0a0a; color: #fff; padding: calc(var(--spacing-xl) + 40px) 0 var(--spacing-xl) 0;">
+        <section class="section" style="background: #0a0a0a; color: #fff; padding: calc(var(--spacing-xl) + 24px) 0 var(--spacing-xl) 0;">
             <div class="container flex-between" style="gap: var(--spacing-lg); flex-wrap: wrap;">
-                <div style="max-width: 700px;">
-                    <h2 style="color: #fff; font-size: var(--font-size-2xl);">AI Design Practice</h2>
-                    <p style="color: #a1a1aa; font-size: var(--font-size-lg); margin-top: var(--spacing-sm);">From human-in-the-loop patterns to AI-first workflows with Figma & Claude. I design FOR AI products and leverage AI natively to push the boundaries of design craft.</p>
+                <div style="max-width: 680px;">
+                    <span class="card-eyebrow" style="color: #60a5fa; margin-bottom: 0.5rem;">Methodology &amp; Tooling</span>
+                    <h2 style="color: #fff; font-size: var(--font-size-2xl); margin-bottom: 0.75rem;">The AI Design Practice</h2>
+                    <p style="color: #a1a1aa; font-size: 1.125rem; margin-bottom: 0;">From human-in-the-loop confidence patterns to rapid code-to-Figma workflows with Claude and Cursor. I design FOR enterprise AI products and leverage AI natively to ship production-grade experiences.</p>
                 </div>
                 <a href="design/ai-practice.html" class="btn btn-outline-white" style="height: 3rem; padding: 0 1.5rem;">Explore the Practice &rarr;</a>
             </div>
         </section>
 
-        <section class="section bg-secondary">
-            <div class="container flex-between about-preview">
+        <section class="section bg-secondary" style="padding: 4rem 0;">
+            <div class="container flex-between about-preview" style="gap: 2rem; flex-wrap: wrap;">
                 <div class="about-text">
+                    <span class="card-eyebrow">Leadership &amp; Craft</span>
                     <h2>Strategy + Creativity</h2>
-                    <p>I believe that good design is invisible. It clears the path for users to achieve their goals
-                        without friction. With over 5 years of experience in product design, I bridge the gap between
-                        user needs and business goals.</p>
-                    <a href="about.html" class="btn btn-outline">More About Me</a>
+                    <p style="font-size: 1.0625rem;">Great enterprise design makes deeply complex systems feel effortless. Over the past 15+ years leading product design and design systems at C3 AI, Omnissa, VMware, and MobileIron, I've focused on building high-performing teams, scalable component architectures, and products that drive measurable business outcomes.</p>
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem;">
+                        <a href="about.html" class="btn btn-default">More About Me</a>
+                        <a href="leadership.html" class="btn btn-outline">Leadership Philosophy</a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section" style="padding: 4rem 0;">
             <div class="container">
-                <h2>Latest Thoughts</h2>
+                <div class="flex-between section-header" style="margin-top: 0; margin-bottom: 1.5rem;">
+                    <h2 style="margin-bottom: 0;">Latest Thoughts</h2>
+                    <a href="blog/index.html" class="view-all" style="font-weight: 500; font-size: 0.9375rem;">All Writing &rarr;</a>
+                </div>
                 <div class="grid blog-grid">
                     <article class="blog-preview-card">
-                        <span class="date">Oct 24, 2025</span>
-                        <a href="blog/post-template.html">
-                            <h3>The Future of Design Systems in AI-Driven Products</h3>
+                        <span class="date">Apr 29, 2026</span>
+                        <a href="blog/claude-coded-design-system.html">
+                            <h3>Claude Coded Design System Documentation Website</h3>
                         </a>
                     </article>
                     <article class="blog-preview-card">
-                        <span class="date">Sep 12, 2025</span>
-                        <a href="blog/post-template.html">
-                            <h3>Why "Mobile First" Still Matters</h3>
+                        <span class="date">Apr 2, 2026</span>
+                        <a href="blog/notion-antigravity-cms.html">
+                            <h3>How I Use Notion and Antigravity as My Blog CMS</h3>
+                        </a>
+                    </article>
+                    <article class="blog-preview-card">
+                        <span class="date">Jan 28, 2026</span>
+                        <a href="blog/five-principles-impactful-leadership.html">
+                            <h3>Five Principles for Impactful Leadership</h3>
                         </a>
                     </article>
                 </div>

@@ -148,15 +148,16 @@ h6 {
     line-height: 1.1;
     margin-bottom: var(--spacing-sm);
     color: hsl(var(--foreground));
+    text-wrap: balance;
 }
 
 h1 {
-    font-size: var(--font-size-3xl);
+    font-size: clamp(2.25rem, 1.5rem + 3.5vw, 3.75rem);
     letter-spacing: -0.03em;
 }
 
 h2 {
-    font-size: var(--font-size-2xl);
+    font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem);
     letter-spacing: -0.02em;
     margin-bottom: var(--spacing-md);
 }
@@ -169,6 +170,7 @@ h3 {
 p {
     margin-bottom: var(--spacing-sm);
     color: hsl(var(--muted-foreground));
+    text-wrap: pretty;
 }
 
 ul,
@@ -180,16 +182,18 @@ ol {
 
 li {
     margin-bottom: 0.5rem;
+    text-wrap: pretty;
 }
 
 blockquote {
     border-left: 4px solid hsl(var(--foreground));
     padding-left: var(--spacing-md);
     font-size: var(--font-size-lg);
-    font-family: var(--font-family-serif);
-    font-style: italic;
+    font-family: var(--font-family-sans);
+    font-weight: 500;
     margin: var(--spacing-md) 0;
     color: hsl(var(--foreground));
+    text-wrap: pretty;
 }
 
 /* Layout Utilities */
@@ -419,15 +423,61 @@ blockquote {
     padding: var(--spacing-xl) 0 var(--spacing-lg);
 }
 
+.hero--home {
+    position: relative;
+    padding: 5.5rem 0 4rem;
+    background:
+        radial-gradient(1100px 520px at 15% 15%, rgba(34, 102, 240, 0.1), transparent 60%),
+        radial-gradient(900px 460px at 85% 75%, rgba(6, 182, 212, 0.08), transparent 60%);
+    border-bottom: 1px solid hsl(var(--border));
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.875rem;
+    border-radius: 9999px;
+    background: hsl(var(--secondary));
+    border: 1px solid hsl(var(--border));
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground));
+    margin-bottom: 1.5rem;
+}
+
+.hero-eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2266f0;
+    box-shadow: 0 0 0 3px rgba(34, 102, 240, 0.2);
+}
+
 .hero-title {
-    max-width: 800px;
+    max-width: 18ch;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+}
+
+.hero-accent {
+    color: #2266f0;
+}
+
+.dark .hero-accent {
+    color: #60a5fa;
 }
 
 .hero-subtitle {
-    font-size: var(--font-size-lg);
-    max-width: 600px;
+    font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
+    max-width: 58ch;
     margin-bottom: var(--spacing-md);
     font-weight: 400;
+    line-height: 1.6;
 }
 
 .hero-centered {
@@ -441,13 +491,45 @@ blockquote {
 
 /* Actions */
 .hero-actions {
-    margin-top: var(--spacing-md);
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.hero-metrics {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid hsl(var(--border));
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.hero-metric-value {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
+}
+
+.hero-metric-label {
+    font-size: 0.8125rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .hero-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 /* Work Preview */
 .case-studies-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 2.25rem;
 }
 
 .case-study-card {
@@ -460,14 +542,32 @@ blockquote {
     width: 100%;
     aspect-ratio: 16/9;
     background-color: var(--bg-secondary);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: 1rem;
     overflow: hidden;
-    border-radius: 4px;
-    transition: transform var(--transition-medium);
+    border-radius: 12px;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
 }
 
 .case-study-card:hover .card-image {
     transform: translateY(-4px);
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.14);
+    border-color: hsl(var(--foreground) / 0.25);
+}
+
+.card-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2266f0;
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+.dark .card-eyebrow {
+    color: #60a5fa;
 }
 
 .placeholder-bg {

@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
         .case-study {
@@ -25,10 +25,10 @@
             --radius: 12px;
             --radius-sm: 6px;
             
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--ink);
             line-height: 1.65;
-            font-size: 16px;
+            font-size: 1rem;
         }
         
         .case-study section {
@@ -114,13 +114,14 @@
         
         h1.hero__title {
             margin: 0 0 24px;
-            font-size: clamp(36px, 6vw, 64px);
+            font-size: clamp(2.25rem, 1.5rem + 4vw, 4rem);
             font-weight: 700;
             letter-spacing: -0.025em;
             line-height: 1.08;
             max-width: 18ch;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--ink);
+            text-wrap: balance;
         }
         
         .hero__title-accent {
@@ -129,10 +130,11 @@
         
         .hero__lede {
             margin: 0;
-            font-size: clamp(17px, 2vw, 20px);
+            font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
             color: var(--ink-muted);
             max-width: 56ch;
             line-height: 1.5;
+            text-wrap: pretty;
         }
         
         .hero__stats {
@@ -187,26 +189,28 @@
         }
         
         .case-study .section-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--ink-light);
-            margin-bottom: 10px;
+            color: var(--accent);
+            margin-bottom: 12px;
         }
         
         .case-study h2 {
-            font-family: 'DM Serif Display', Georgia, serif;
-            font-size: clamp(24px, 3vw, 32px);
-            font-weight: 400;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+            font-weight: 700;
             line-height: 1.15;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.02em;
             margin-bottom: 16px;
             color: var(--ink);
+            text-wrap: balance;
         }
         
         .case-study h3 {
-            font-size: 15px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9375rem;
             font-weight: 600;
             color: var(--ink);
             margin-bottom: 8px;
@@ -215,7 +219,8 @@
         .case-study p {
             color: var(--ink-muted);
             margin-bottom: 14px;
-            font-size: 15px;
+            font-size: 0.9375rem;
+            text-wrap: pretty;
         }
         
         .case-study p:last-child {

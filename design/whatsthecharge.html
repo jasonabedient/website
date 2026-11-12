@@ -118,21 +118,23 @@
     }
     h1.hero__title {
       margin: 0 0 24px;
-      font-size: clamp(36px, 6vw, 64px);
+      font-size: clamp(2.25rem, 1.5rem + 4vw, 4rem);
       font-weight: 700;
       letter-spacing: -0.025em;
       line-height: 1.08;
       max-width: 18ch;
+      text-wrap: balance;
     }
     .hero__title-accent {
       color: var(--primary);
     }
     .hero__lede {
       margin: 0;
-      font-size: clamp(17px, 2vw, 20px);
+      font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
       color: var(--fg-muted);
       max-width: 56ch;
       line-height: 1.5;
+      text-wrap: pretty;
     }
     .hero__stats {
       margin-top: 56px;
@@ -187,18 +189,20 @@
     }
     .s__title {
       margin: 0 0 16px;
-      font-size: clamp(28px, 4vw, 40px);
+      font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.15;
       max-width: 22ch;
+      text-wrap: balance;
     }
     .s__lede {
       margin: 0;
-      font-size: 18px;
+      font-size: 1.125rem;
       color: var(--fg-muted);
       max-width: 56ch;
       line-height: 1.55;
+      text-wrap: pretty;
     }
 
     /* ============ SCREENSHOT ============ */
@@ -533,9 +537,9 @@
           <div class="shot__dots"><span></span><span></span><span></span></div>
           <span>whatsthecharge.com — Calculator</span>
         </div>
-        <img class="shot__img" src="../assets/images/case-study/wtc-hero.png" alt="What's The Charge calculator — dark UI with year/make/model dropdowns, charger power, state auto-set to California, electricity rate pre-filled" onerror="this.parentElement.querySelector('.shot__placeholder') && (this.parentElement.querySelector('.shot__placeholder').style.display='flex'); this.style.display='none'" />
+        <img class="shot__img" src="../assets/images/case-study/wtc-thumb.svg" alt="What's The Charge calculator — dark UI with year/make/model dropdowns, charger power, state auto-set to California, electricity rate pre-filled" />
         <div class="shot__caption">
-          <strong>Zero required setup.</strong> State auto-detected from browser location, electricity rate pre-filled from utility data, charger power defaulted to the most common Level 2 (5.8 kW / 24A). The user's only required action is picking their vehicle.
+          <strong>Zero required setup.</strong> State auto-detected from browser location, electricity rate pre-filled from utility data, charger power defaulted to Level 2 home charging. The user's only required action is picking their vehicle.
         </div>
       </div>
     </div>
@@ -590,7 +594,7 @@
             <div class="shot__dots"><span></span><span></span><span></span></div>
             <span>whatsthecharge.com — Results</span>
           </div>
-          <img class="shot__img" src="../assets/images/case-study/wtc-results.png" alt="What's The Charge results — charging time, cost, and cost-per-mile breakdown" onerror="this.style.display='none'" />
+          <img class="shot__img" src="../assets/images/case-study/wtc-results-showcase.svg" alt="What's The Charge results — charging time, cost, and cost-per-mile breakdown" />
         </div>
 
         <div class="callouts">

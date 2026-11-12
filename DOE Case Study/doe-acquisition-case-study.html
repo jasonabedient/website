@@ -6,7 +6,7 @@
   <title>DOE Federal Procurement — Design Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -15,7 +15,7 @@
       --accent: #1a4fbd; --accent-light: #ebf0fc; --radius: 12px; --radius-sm: 6px;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--ink); line-height: 1.65; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--surface); color: var(--ink); line-height: 1.65; font-size: 1rem; -webkit-font-smoothing: antialiased; }
 
     nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 16px 48px; display: flex; align-items: center; justify-content: space-between; }
     nav .back { font-size: 13px; font-weight: 500; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; }
@@ -27,19 +27,19 @@
     section { padding: 64px 0; border-top: 1px solid var(--border); }
 
     .hero { padding: 88px 0 64px; }
-    .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
     .eyebrow::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
-    h1 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(34px, 5vw, 52px); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; max-width: 700px; }
-    h1 em { font-style: italic; color: var(--accent); }
-    .hero-lead { font-size: 17px; color: var(--ink-muted); max-width: 600px; margin-bottom: 40px; line-height: 1.7; }
+    h1 { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: clamp(2.25rem, 1.5rem + 4vw, 4rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.025em; margin-bottom: 20px; max-width: 18ch; text-wrap: balance; }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-lead { font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem); color: var(--ink-muted); max-width: 56ch; margin-bottom: 40px; line-height: 1.5; text-wrap: pretty; }
 
     .meta-row { display: flex; flex-wrap: wrap; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .meta-item { background: var(--surface); padding: 16px 20px; flex: 1; min-width: 130px; }
     .meta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 4px; }
     .meta-value { font-size: 13px; font-weight: 500; color: var(--ink); }
 
-    .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 10px; }
-    h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(24px, 3vw, 32px); font-weight: 400; line-height: 1.15; letter-spacing: -0.015em; margin-bottom: 16px; }
+    .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    h2 { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 16px; text-wrap: balance; }
     h3 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
     p { color: var(--ink-muted); margin-bottom: 14px; font-size: 15px; }
     p:last-child { margin-bottom: 0; }

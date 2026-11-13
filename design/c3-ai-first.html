@@ -549,22 +549,44 @@
       </div>
 
       <div class="shot">
-        <div class="shot__chrome" style="justify-content: space-between;">
+        <div class="shot__chrome" style="justify-content: space-between; flex-wrap: wrap; gap: 12px;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <div class="shot__dots"><span></span><span></span><span></span></div>
-            <span>C3 Ion Design System · Storybook Overview</span>
+            <span style="font-weight: 600; color: var(--fg);">C3 Ion Design System · Live Interactive Storybook</span>
           </div>
-          <a href="https://c3-storybook.vercel.app/?path=/docs/introduction--overview" target="_blank" rel="noopener" style="font-size: 12px; font-weight: 600;">Open Live Storybook ↗</a>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <div style="display: inline-flex; gap: 4px; background: #e2e8f0; padding: 3px; border-radius: 8px;">
+              <button type="button" class="sb-tab active" onclick="setStorybookPath('/docs/introduction--overview', this)" style="border:0; background:#fff; padding:4px 10px; border-radius:6px; font-family:inherit; font-size:11.5px; font-weight:600; color:#0f172a; cursor:pointer;">Overview</button>
+              <button type="button" class="sb-tab" onclick="setStorybookPath('/story/pages-full-page-ai-chat--active-session', this)" style="border:0; background:transparent; padding:4px 10px; border-radius:6px; font-family:inherit; font-size:11.5px; font-weight:600; color:#475569; cursor:pointer;">AI Chat Session</button>
+              <button type="button" class="sb-tab" onclick="setStorybookPath('/story/pages-list--with-kpi-card', this)" style="border:0; background:transparent; padding:4px 10px; border-radius:6px; font-family:inherit; font-size:11.5px; font-weight:600; color:#475569; cursor:pointer;">Alerts ListPage</button>
+              <button type="button" class="sb-tab" onclick="setStorybookPath('/docs/components-side-nav-panel--docs', this)" style="border:0; background:transparent; padding:4px 10px; border-radius:6px; font-family:inherit; font-size:11.5px; font-weight:600; color:#475569; cursor:pointer;">Side Nav</button>
+              <button type="button" class="sb-tab" onclick="setStorybookPath('/docs/agent-workflows--docs', this)" style="border:0; background:transparent; padding:4px 10px; border-radius:6px; font-family:inherit; font-size:11.5px; font-weight:600; color:#475569; cursor:pointer;">Agent Workflows</button>
+            </div>
+            <a href="https://c3-storybook.vercel.app/?path=/docs/introduction--overview" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; background: #ffffff; border: 1px solid var(--border); font-size: 11.5px; font-weight: 600; color: var(--fg); text-decoration: none;">Open Fullscreen ↗</a>
+          </div>
         </div>
-        <img class="shot__img" src="../assets/images/case-study/docs-home.png" alt="C3 Ion Design System Storybook overview — Foundations, Guides, Pages, Components, and Agent Workflows" onerror="this.parentElement.querySelector('.shot__placeholder').style.display='flex';this.style.display='none'"/>
-        <div class="shot__placeholder" style="display:none">
-          <strong>case-study/docs-home.png</strong>
-          <span>C3 Ion Storybook — Foundations, Guides, Pages, and Components</span>
-        </div>
+        <iframe id="c3StorybookIframe" src="https://c3-storybook.vercel.app/?path=/docs/introduction--overview" title="C3 Ion Design System Live Storybook" style="display: block; width: 100%; height: 740px; border: 0; background: #ffffff;" loading="lazy"></iframe>
         <div class="shot__caption">
-          <strong>Live Storybook source of truth.</strong> C3 Ion organizes Foundations, screen-construction Guides, full-page Templates, and 60+ Components (including a dedicated AI component suite and Agent Workflows) in one interactive Storybook connected directly to Figma and GitHub.
+          <strong>Live C3 Ion Storybook.</strong> Explore the live Storybook directly above—use the quick-jump tabs in the window header to inspect the <strong>Overview</strong>, <strong>AI Chat Session</strong>, <strong>Alerts ListPage</strong>, <strong>Side Nav Panel</strong>, and <strong>Agent Workflows</strong> at full vector resolution.
         </div>
       </div>
+      <script>
+        function setStorybookPath(path, btn) {
+          var iframe = document.getElementById('c3StorybookIframe');
+          if (iframe) {
+            iframe.src = 'https://c3-storybook.vercel.app/?path=' + path;
+          }
+          var tabs = document.querySelectorAll('.sb-tab');
+          tabs.forEach(function(t) {
+            t.style.background = 'transparent';
+            t.style.color = '#475569';
+          });
+          if (btn) {
+            btn.style.background = '#ffffff';
+            btn.style.color = '#0f172a';
+          }
+        }
+      </script>
     </div>
   </section>
 

@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C3 Code Factory — Autonomous Jira-to-PR Workflow | Jason Bedient</title>
   <meta name="description" content="How we designed C3 Code Factory: add the 'C3 Code Factory' label to any Jira ticket to queue autonomous coding agents that reproduce, fix, and stage live previews in the Inspection Queue." />
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --fg: #0a0a0a;
@@ -49,14 +53,14 @@
     .jira-label {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 2px 10px 2px 8px;
+      justify-content: center;
+      padding: 2px 10px;
       border-radius: 6px;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 0.82em;
       font-weight: 600;
       letter-spacing: 0.01em;
-      line-height: 1.35;
+      line-height: 1.4;
       color: #1e293b;
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
@@ -64,20 +68,11 @@
       vertical-align: baseline;
       white-space: nowrap;
     }
-    .jira-label::before {
-      content: "";
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-      flex-shrink: 0;
-    }
     .stat__value .jira-label {
-      font-size: 16px;
-      padding: 5px 12px 5px 10px;
-      border-radius: 8px;
-      background: #f8fafc;
+      font-size: 15px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: #f1f5f9;
       border: 1px solid #cbd5e1;
     }
 
@@ -484,10 +479,6 @@
       background: #ffffff;
     }
   </style>
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="site-header">

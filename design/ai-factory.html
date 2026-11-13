@@ -45,6 +45,42 @@
       border-radius: 4px;
     }
 
+    /* ============ JIRA LABEL CHIP ============ */
+    .jira-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 10px 2px 8px;
+      border-radius: 6px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.82em;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1.35;
+      color: #1e293b;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 1px 1px rgba(15, 23, 42, 0.04);
+      vertical-align: baseline;
+      white-space: nowrap;
+    }
+    .jira-label::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+    .stat__value .jira-label {
+      font-size: 16px;
+      padding: 5px 12px 5px 10px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+    }
+
     /* ============ HERO ============ */
     .hero {
       position: relative;
@@ -282,6 +318,8 @@
       border-bottom: 1px solid #e2e6f0;
       font-size: 12px;
       color: var(--fg-muted);
+      position: relative;
+      z-index: 2;
     }
     .shot__chrome-left {
       display: flex;
@@ -305,6 +343,10 @@
       width: 100%;
       height: auto;
       background: #0f172a;
+    }
+    .shot__img--cropped-top {
+      margin-top: -7.5%;
+      background: #ffffff;
     }
     .shot__caption {
       padding: 16px 20px;
@@ -394,7 +436,7 @@
 
     /* ============ EMBEDDED DEMO ============ */
     .demo-frame-wrap {
-      margin-top: 32px;
+      margin-top: 36px;
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       background: #ffffff;
@@ -437,7 +479,7 @@
     .demo-iframe {
       display: block;
       width: 100%;
-      height: 760px;
+      height: 780px;
       border: 0;
       background: #ffffff;
     }
@@ -495,17 +537,17 @@
         From Jira ticket to verified fix with <span class="hero__title-accent">one label</span>.
       </h1>
       <p class="hero__lede">
-        AI Factory turns everyday Jira tickets into autonomous development orders. Adding the <code>C3 Code Factory</code> label routes an issue directly into the Agent Queue—where coding agents reproduce the bug, ship a patch, and stage a live preview in the Inspection Queue for a developer to verify.
+        AI Factory turns everyday Jira tickets into autonomous development orders. Adding the <span class="jira-label">C3 Code Factory</span> label routes an issue directly into the Agent Queue—where coding agents reproduce the bug, ship a patch, and stage a live preview in the Inspection Queue for a developer to verify.
       </p>
 
       <div class="hero__actions">
-        <a href="#interactive-demo" class="hero__btn hero__btn--primary">Try Interactive Prototype ↓</a>
-        <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" class="hero__btn hero__btn--ghost">Open Fullscreen Board ↗</a>
+        <a href="#interactive-demo" class="hero__btn hero__btn--primary">Explore Interactive Board ↓</a>
+        <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" class="hero__btn hero__btn--ghost">Open Fullscreen Prototype ↗</a>
       </div>
 
       <div class="hero__stats">
         <div class="stat">
-          <div class="stat__value"><code>C3 Code Factory</code></div>
+          <div class="stat__value"><span class="jira-label">C3 Code Factory</span></div>
           <div class="stat__label">Jira label trigger</div>
         </div>
         <div class="stat">
@@ -524,20 +566,20 @@
     </div>
   </section>
 
-  <!-- ============ THE WORKFLOW ============ -->
-  <section class="s">
+  <!-- ============ THE WORKFLOW + KANBAN BOARD ============ -->
+  <section class="s" id="interactive-demo">
     <div class="s__inner">
       <div class="s__eyebrow">The Workflow</div>
       <h2 class="s__title">Zero-friction handoff from bug report to human inspection.</h2>
       <p class="s__lede">
-        UI polish bugs, scroll flickers, and layout regressions often sit in backlog triage because context-switching is expensive. With AI Factory, designers and engineers file a clear Jira ticket with reproduction steps, apply the <code>C3 Code Factory</code> label, and let autonomous agents handle the implementation loop.
+        UI polish bugs, scroll flickers, and layout regressions often sit in backlog triage because context-switching is expensive. With AI Factory, designers and engineers file a clear Jira ticket with reproduction steps, apply the <span class="jira-label">C3 Code Factory</span> label, and let autonomous agents handle the implementation loop.
       </p>
 
       <div class="pipeline">
         <div class="pipeline__step">
           <div class="pipeline__num">1</div>
           <p class="pipeline__name">Label in Jira</p>
-          <p class="pipeline__sub">Add the <code>C3 Code Factory</code> label to any Jira issue (e.g. <code>PLAT-160847</code>) with steps to reproduce.</p>
+          <p class="pipeline__sub">Add the <span class="jira-label">C3 Code Factory</span> label to any Jira issue (e.g. <code>PLAT-160847</code>) with steps to reproduce.</p>
         </div>
         <div class="pipeline__step">
           <div class="pipeline__num">2</div>
@@ -555,6 +597,23 @@
           <p class="pipeline__sub">Order lands in <strong>Inspection</strong> with a live <strong>Preview</strong> link so a developer can verify and merge.</p>
         </div>
       </div>
+
+      <div class="demo-frame-wrap">
+        <div class="demo-toolbar">
+          <div class="shot__chrome-left">
+            <div class="shot__dots"><span></span><span></span><span></span></div>
+            <span style="font-size: 12px; font-weight: 600; color: var(--fg);">C3 Code · Factory Live Interactive Prototype</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="demo-tabs" role="tablist" aria-label="Prototype view mode">
+              <button type="button" class="demo-tab active" id="tabBoard" onclick="switchDemoView('Board')">Kanban Board</button>
+              <button type="button" class="demo-tab" id="tabAnalytics" onclick="switchDemoView('Analytics')">Analytics &amp; Telemetry</button>
+            </div>
+            <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" style="font-size: 12px; font-weight: 600;">Open fullscreen ↗</a>
+          </div>
+        </div>
+        <iframe id="factoryDemoIframe" class="demo-iframe" src="ai-factory-demo.html?view=Board" title="C3 Code Factory Interactive Prototype"></iframe>
+      </div>
     </div>
   </section>
 
@@ -564,7 +623,7 @@
       <div class="s__eyebrow">Live Queue Triage</div>
       <h2 class="s__title">Watching labeled Jira tickets spin up agents in real time.</h2>
       <p class="s__lede">
-        As soon as tickets are tagged with <code>C3 Code Factory</code>, they populate the <strong>Queued</strong> column on the Factory board. Team members can filter the board by assignee initials at the top, monitor run count and dollar cost per card, and launch a live preview environment directly from the card footer.
+        As soon as tickets are tagged with <span class="jira-label">C3 Code Factory</span>, they populate the <strong>Queued</strong> column on the Factory board. Team members can filter the board by assignee initials at the top, monitor run count and dollar cost per card, and launch a live preview environment directly from the card footer.
       </p>
 
       <div class="annotated">
@@ -576,7 +635,7 @@
             </div>
             <span>3 Orders Queued</span>
           </div>
-          <img class="shot__img" src="../assets/images/case-study/ai-factory-queued.jpg" alt="AI Factory Queued column showing three C3 Code - Genesis tickets (CODE-622, CODE-620, CODE-621) starting agents" />
+          <img class="shot__img shot__img--cropped-top" src="../assets/images/case-study/ai-factory-queued.jpg" alt="AI Factory Queued column showing three C3 Code - Genesis tickets (CODE-622, CODE-620, CODE-621) starting agents" />
         </div>
 
         <div class="callouts">
@@ -607,7 +666,7 @@
       <div class="s__eyebrow">Real Tickets Sent to the Factory</div>
       <h2 class="s__title">Filing UX polish bugs for autonomous resolution.</h2>
       <p class="s__lede">
-        Here are two of the actual UI bugs captured and labeled <code>C3 Code Factory</code> in the queue above—demonstrating how visual interaction glitches are documented and handed off to the agents.
+        Here are two of the actual UI bugs captured and labeled <span class="jira-label">C3 Code Factory</span> in the queue above—demonstrating how visual interaction glitches are documented and handed off to the agents.
       </p>
 
       <div class="video-grid">
@@ -628,7 +687,7 @@
             <source src="../assets/images/case-study/text_area_window_too_small.mp4" type="video/mp4" />
           </video>
           <div class="shot__caption">
-            <strong>C3 Code | Home prompt text area is too small for multi-line prompts.</strong> When pasting or typing a prompt longer than ~2 lines on the Home screen ("What do you want to create?"), the text area constrains visibility instead of expanding smoothly. Tagged <code>C3 Code Factory</code> and queued for an agent fix.
+            <strong>C3 Code | Home prompt text area is too small for multi-line prompts.</strong> When pasting or typing a prompt longer than ~2 lines on the Home screen ("What do you want to create?"), the text area constrains visibility instead of expanding smoothly. Tagged <span class="jira-label">C3 Code Factory</span> and queued for an agent fix.
           </div>
         </div>
 
@@ -649,37 +708,9 @@
             <source src="../assets/images/case-study/bad_flicker_on_arrow_down.mp4" type="video/mp4" />
           </video>
           <div class="shot__caption">
-            <strong>C3 Code | Chat flickers badly when clicking the "scroll to bottom" arrow.</strong> During or after a long agent response in a workspace chat, scrolling up and clicking the <code>↓</code> jump-to-bottom button triggers severe layout/scroll Thrashing. Tagged <code>C3 Code Factory</code> for autonomous debugging and verification.
+            <strong>C3 Code | Chat flickers badly when clicking the "scroll to bottom" arrow.</strong> During or after a long agent response in a workspace chat, scrolling up and clicking the <code>↓</code> jump-to-bottom button triggers severe layout/scroll thrashing. Tagged <span class="jira-label">C3 Code Factory</span> for autonomous debugging and verification.
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ INTERACTIVE PROTOTYPE ============ -->
-  <section class="s s--soft" id="interactive-demo">
-    <div class="s__inner">
-      <div class="s__eyebrow">Interactive Prototype</div>
-      <h2 class="s__title">Explore the C3 Code Factory Board &amp; Analytics.</h2>
-      <p class="s__lede">
-        Switch between the per-developer Kanban <strong>Board</strong> (On Hold, Queued, In Process, Inspection, Complete) and the fleet-wide <strong>Analytics</strong> dashboard below, or filter by assignee and priority.
-      </p>
-
-      <div class="demo-frame-wrap">
-        <div class="demo-toolbar">
-          <div class="shot__chrome-left">
-            <div class="shot__dots"><span></span><span></span><span></span></div>
-            <span style="font-size: 12px; font-weight: 600; color: var(--fg);">C3 Code · Factory Interactive Prototype</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="demo-tabs" role="tablist" aria-label="Prototype view mode">
-              <button type="button" class="demo-tab active" id="tabBoard" onclick="switchDemoView('Board')">Kanban Board</button>
-              <button type="button" class="demo-tab" id="tabAnalytics" onclick="switchDemoView('Analytics')">Analytics &amp; Telemetry</button>
-            </div>
-            <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" style="font-size: 12px; font-weight: 600;">Open in new tab ↗</a>
-          </div>
-        </div>
-        <iframe id="factoryDemoIframe" class="demo-iframe" src="ai-factory-demo.html?view=Board" title="C3 Code Factory Interactive Prototype" loading="lazy"></iframe>
       </div>
     </div>
   </section>

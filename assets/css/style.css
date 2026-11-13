@@ -251,6 +251,12 @@ blockquote {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
+    color: var(--text-main);
+}
+
+.logo:hover {
+    color: var(--text-main);
+    text-decoration: none;
 }
 
 .site-logo-img {

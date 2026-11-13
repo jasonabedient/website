@@ -42,6 +42,12 @@
     }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
+    .site-header .logo,
+    .site-header .logo:hover,
+    .site-header .btn-outline {
+      color: #0a0a0a;
+      text-decoration: none;
+    }
     code {
       font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, monospace;
       font-size: 0.85em;
@@ -54,10 +60,7 @@
     .hero {
       position: relative;
       padding: 96px 24px 72px;
-      background:
-        radial-gradient(1200px 600px at 20% 20%, rgba(34, 102, 240, 0.18), transparent 60%),
-        radial-gradient(1000px 500px at 80% 80%, rgba(96, 165, 250, 0.14), transparent 60%),
-        var(--bg-page);
+      background: var(--bg-page);
       border-bottom: 1px solid var(--border);
       overflow: hidden;
     }

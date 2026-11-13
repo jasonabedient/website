@@ -530,6 +530,17 @@ blockquote {
     gap: 2.25rem;
 }
 
+.work-preview .case-studies-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 768px) {
+    .case-studies-grid,
+    .work-preview .case-studies-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .case-study-card {
     cursor: pointer;
     display: flex;

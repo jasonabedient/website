@@ -704,6 +704,49 @@
     </div>
   </section>
 
+  <!-- ============ AUTONOMOUS FIX & JIRA WRITEBACK ============ -->
+  <section class="s s--soft">
+    <div class="s__inner">
+      <div class="s__eyebrow">Closing the Loop</div>
+      <h2 class="s__title">The agent diagnoses the root cause, ships the PR, and updates Jira.</h2>
+      <p class="s__lede">
+        Once the <span class="jira-label">C3 Code Factory</span> agent picks up the scroll-flicker ticket, it traces the bug down to a conflict between a <code>MutationObserver</code> smooth-scroll loop and an in-flow 89px sticky header, ships a PR with 11 unit tests, and writes the structured Root Cause Assessment back to Jira—automatically moving the ticket from <strong>Open → In progress → In Review</strong>.
+      </p>
+
+      <div class="annotated">
+        <div class="shot">
+          <div class="shot__chrome">
+            <div class="shot__chrome-left">
+              <div class="shot__dots"><span></span><span></span><span></span></div>
+              <span>Jira Issue Activity · C3Code@c3.ai Automated Update</span>
+            </div>
+            <span class="ticket-pill ticket-pill--jira">PR #2704</span>
+          </div>
+          <img class="shot__img" style="background: #ffffff;" src="../assets/images/case-study/ai-factory-agent-fix.jpg" alt="Jira update by C3Code@c3.ai detailing Root Cause, Fix (useAutoScrollToBottom hook in PR #2704), Prevention (11 unit tests + frontend skill rule), and status transition to In Review" />
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3 class="callout__title">Deep root-cause diagnosis</h3>
+            <p class="callout__body">The agent identified two interacting bugs: <code>ChatSessionView</code> firing smooth scrolls on every streamed token while <code>scrollHeight</code> grew, and <code>StickyPromptHeader</code> inserting an 89px in-flow block that caused scroll-step jumping.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Clean architectural fix</h3>
+            <p class="callout__body">Extracted a dedicated <code>useAutoScrollToBottom</code> hook using <code>ResizeObserver</code> that immediately yields when a user wheels up, and converted the sticky prompt header to a zero-height overlay anchor.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Self-improving prevention</h3>
+            <p class="callout__body">Beyond fixing the bug, the agent added <strong>11 unit tests</strong>, a layout assertion for <code>StickyPromptHeader</code>, and a new <strong>frontend skill rule</strong> for streaming transcripts so future agents never repeat the pattern.</p>
+          </div>
+          <div class="callout">
+            <h3 class="callout__title">Zero-touch Jira hygiene</h3>
+            <p class="callout__body"><code>C3Code@c3.ai</code> populates the required Root Cause Assessment fields, links GitHub PR <code>#2704</code>, sets the fix version (<code>8.13-studio</code>), and transitions the Jira status to <strong>In Review</strong> for the Inspection Queue.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <nav class="case-study-nav section" style="padding: 48px 0; border-top: 1px solid var(--border); background: var(--bg);">
     <div class="container flex-between" style="max-width: var(--content-max); margin: 0 auto; display: flex; justify-content: space-between; padding: 0 24px;">
       <a href="c3-ai-first.html" class="prev-project" style="font-weight: 500; font-size: 14px; color: var(--primary);">&larr; C3.ai AI-First Design System</a>

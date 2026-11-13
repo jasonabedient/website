@@ -426,9 +426,7 @@ blockquote {
 .hero--home {
     position: relative;
     padding: 5.5rem 0 4rem;
-    background:
-        radial-gradient(1100px 520px at 15% 15%, rgba(34, 102, 240, 0.1), transparent 60%),
-        radial-gradient(900px 460px at 85% 75%, rgba(6, 182, 212, 0.08), transparent 60%);
+    background: hsl(var(--background));
     border-bottom: 1px solid hsl(var(--border));
 }
 

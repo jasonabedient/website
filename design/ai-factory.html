@@ -540,11 +540,6 @@
         AI Factory turns everyday Jira tickets into autonomous development orders. Adding the <span class="jira-label">C3 Code Factory</span> label routes an issue directly into the Agent Queue—where coding agents reproduce the bug, ship a patch, and stage a live preview in the Inspection Queue for a developer to verify.
       </p>
 
-      <div class="hero__actions">
-        <a href="#interactive-demo" class="hero__btn hero__btn--primary">Explore Interactive Board ↓</a>
-        <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" class="hero__btn hero__btn--ghost">Open Fullscreen Prototype ↗</a>
-      </div>
-
       <div class="hero__stats">
         <div class="stat">
           <div class="stat__value"><span class="jira-label">C3 Code Factory</span></div>
@@ -602,15 +597,9 @@
         <div class="demo-toolbar">
           <div class="shot__chrome-left">
             <div class="shot__dots"><span></span><span></span><span></span></div>
-            <span style="font-size: 12px; font-weight: 600; color: var(--fg);">C3 Code · Factory Live Interactive Prototype</span>
+            <span style="font-size: 12px; font-weight: 500; color: var(--fg-muted);">C3 Code · Factory — Interactive Prototype</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="demo-tabs" role="tablist" aria-label="Prototype view mode">
-              <button type="button" class="demo-tab active" id="tabBoard" onclick="switchDemoView('Board')">Kanban Board</button>
-              <button type="button" class="demo-tab" id="tabAnalytics" onclick="switchDemoView('Analytics')">Analytics &amp; Telemetry</button>
-            </div>
-            <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" style="font-size: 12px; font-weight: 600;">Open fullscreen ↗</a>
-          </div>
+          <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; background: #ffffff; border: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--fg); text-decoration: none;">Open Fullscreen ↗</a>
         </div>
         <iframe id="factoryDemoIframe" class="demo-iframe" src="ai-factory-demo.html?view=Board" title="C3 Code Factory Interactive Prototype"></iframe>
       </div>

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C3 Ion Design System → C3 Code | Jason Bedient Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --fg: #0a0a0a;
+      --fg-muted: #525866;
+      --fg-subtle: #8a909e;
+      --primary: #2266f0;
+      --primary-soft: #eef4ff;
+      --border: #e2e6f0;
+      --border-strong: #cbd2e1;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
+      color: var(--fg);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============ APP SHELL ============ */
+    .deck-app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Top Control Bar */
+    .deck-topbar {
+      height: 48px;
+      background: #090d16;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      flex-shrink: 0;
+      user-select: none;
+      z-index: 20;
+    }
+    .deck-topbar__left,
+    .deck-topbar__center,
+    .deck-topbar__right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .deck-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .deck-brand__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .deck-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .deck-dot {
+      width: 24px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .deck-dot:hover { background: rgba(255, 255, 255, 0.35); }
+    .deck-dot.active {
+      width: 36px;
+      background: var(--primary);
+    }
+    .deck-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .deck-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+    .deck-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .deck-timer {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+    }
+
+    /* Stage + Speaker Notes Split */
+    .deck-stage-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      background: #0f172a;
+    }
+    .deck-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 28px;
+      overflow: hidden;
+    }
+
+    /* Slide Canvas */
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1360px;
+      height: 100%;
+      max-height: 820px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 28px 80px -20px rgba(0, 0, 0, 0.55);
+      padding: clamp(28px, 3.2vw, 48px) clamp(32px, 4vw, 56px);
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+    .slide.active {
+      display: flex;
+      animation: slideFade 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide Header & Footer Chrome */
+    .slide__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+    .slide__eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slide__time-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .slide__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+    }
+    .slide__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      margin-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--fg-subtle);
+      flex-shrink: 0;
+    }
+
+    /* Typography */
+    .slide__title {
+      font-size: clamp(1.85rem, 2.7vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--fg);
+      margin-bottom: 12px;
+      text-wrap: balance;
+    }
+    .slide__title--hero {
+      font-size: clamp(2.25rem, 3.6vw, 3.6rem);
+      max-width: 20ch;
+      margin-bottom: 18px;
+    }
+    .slide__lede {
+      font-size: clamp(1rem, 1.25vw, 1.1875rem);
+      color: var(--fg-muted);
+      line-height: 1.55;
+      max-width: 68ch;
+      margin-bottom: 24px;
+    }
+    .accent { color: var(--primary); }
+
+    /* Grids & Standard Cards */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .split-60-40 {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 28px;
+      align-items: center;
+      min-height: 0;
+      flex: 1;
+    }
+    .split-50-50 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+      min-height: 0;
+      flex: 1;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+    }
+    .card--soft {
+      background: var(--bg);
+    }
+    .card__kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .card__stat {
+      font-size: clamp(1.35rem, 2vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 4px;
+      line-height: 1.15;
+    }
+    .card__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+    .card__text {
+      font-size: 13.5px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+    .card__text code {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+
+    /* Jira Chip */
+    .jira-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 10px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: #1e293b;
+      vertical-align: baseline;
+    }
+
+    /* Media Frames */
+    .media-frame {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 12px 32px -12px rgba(10, 10, 10, 0.14);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+    }
+    .media-frame__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 14px;
+      background: #f5f7fc;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--fg-muted);
+      flex-shrink: 0;
+    }
+    .media-frame__dots {
+      display: inline-flex;
+      gap: 5px;
+    }
+    .media-frame__dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #d5dbe7;
+    }
+    .media-frame__content {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+    }
+    .media-frame__content img,
+    .media-frame__content video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .media-frame__iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #ffffff;
+    }
+
+    /* Interactive Tab Pills inside Slide Media Bar */
+    .pill-tabs {
+      display: inline-flex;
+      gap: 4px;
+      background: #e2e8f0;
+      padding: 2px;
+      border-radius: 6px;
+    }
+    .pill-tab {
+      border: 0;
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+    }
+    .pill-tab.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Pipeline Steps */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      overflow: hidden;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+    .pipeline__step {
+      padding: 14px 16px;
+      border-right: 1px solid var(--border);
+    }
+    .pipeline__step:last-child { border-right: 0; }
+    .pipeline__num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .pipeline__title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .pipeline__desc {
+      font-size: 12px;
+      color: var(--fg-muted);
+      line-height: 1.4;
+    }
+
+    /* Speaker Notes Drawer */
+    .speaker-drawer {
+      background: #111827;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      padding: 14px 28px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      max-height: 155px;
+      overflow-y: auto;
+    }
+    .speaker-drawer.hidden {
+      display: none;
+    }
+    .speaker-drawer__tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #60a5fa;
+      background: rgba(34, 102, 240, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .speaker-drawer__content {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #cbd5e1;
+      max-width: 1100px;
+    }
+    .speaker-drawer__content strong {
+      color: #ffffff;
+    }
+
+    /* Print / PDF Export */
+    @media print {
+      html, body {
+        height: auto;
+        overflow: visible;
+        background: #ffffff;
+      }
+      .deck-topbar, .speaker-drawer { display: none !important; }
+      .deck-app, .deck-stage-wrap, .deck-stage {
+        display: block;
+        height: auto;
+        padding: 0;
+        background: #ffffff;
+      }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        break-after: page;
+        height: 92vh;
+        max-height: none;
+        box-shadow: none;
+        border: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-app">
+    <!-- TOP NAVIGATION BAR -->
+    <header class="deck-topbar">
+      <div class="deck-topbar__left">
+        <a href="index.html" class="deck-brand">
+          <span class="deck-brand__dot"></span>
+          Jason Bedient · Interview Presentation
+        </a>
+        <span style="color: #64748b;">|</span>
+        <span id="slideCounter" style="font-family: var(--font-mono); color: #94a3b8;">Slide 1 / 9</span>
+      </div>
+
+      <div class="deck-topbar__center">
+        <div class="deck-dots" id="deckDots"></div>
+      </div>
+
+      <div class="deck-topbar__right">
+        <div class="deck-timer" id="deckTimer" title="Click to Start / Pause / Reset timer">⏱ 00:00 / 08:00</div>
+        <button class="deck-btn active" id="toggleNotesBtn" type="button" title="Toggle Speaker Notes (Key: N)">
+          Speaker Notes (N)
+        </button>
+        <button class="deck-btn" id="prevBtn" type="button" title="Previous Slide (←)">← Prev</button>
+        <button class="deck-btn" id="nextBtn" type="button" title="Next Slide (→)">Next →</button>
+        <button class="deck-btn" id="fullscreenBtn" type="button" title="Toggle Fullscreen (Key: F)">Fullscreen (F)</button>
+      </div>
+    </header>
+
+    <div class="deck-stage-wrap">
+      <main class="deck-stage">
+
+        <!-- ============================================================
+             SLIDE 1: TITLE & THESIS
+             ============================================================ -->
+        <section class="slide active" data-notes="<strong>Opening Hook (45s):</strong> 'Thanks for having me. Today I want to share the work I'm most proud of at C3 AI—not as two separate projects, but as one connected story: how I rebuilt our enterprise design system in code for the AI era, and then used that system to level up <strong>C3 Code</strong>, our autonomous software engineering product.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">Portfolio Showcase · Design Director at C3 AI</span>
+            <span class="slide__time-pill">0:00 – 0:45</span>
+          </div>
+
+          <div class="slide__body">
+            <div style="margin-bottom: 14px;">
+              <span class="jira-label" style="background: var(--primary-soft); border-color: #bfdbfe; color: var(--primary);">Part I: C3 Ion Design System</span>
+              <span style="margin: 0 8px; color: var(--fg-subtle);">→</span>
+              <span class="jira-label">Part II: C3 Code &amp; AI Factory</span>
+            </div>
+            <h1 class="slide__title slide__title--hero">
+              Building an <span class="accent">AI-First Design System</span> to Power Autonomous Engineering.
+            </h1>
+            <p class="slide__lede">
+              Most design systems are built for humans dragging components in Figma. We rebuilt C3 Ion in production code so both designers and autonomous coding agents could consume it—and used it to transform <strong>C3 Code</strong>.
+            </p>
+
+            <div class="grid-4" style="margin-top: 12px;">
+              <div class="card">
+                <div class="card__kicker">Architecture</div>
+                <div class="card__stat">3-Tier Tokens</div>
+                <p class="card__text">Primitive → Semantic → Component CSS contracts shared across Figma &amp; React.</p>
+              </div>
+              <div class="card">
+                <div class="card__kicker">Source of Truth</div>
+                <div class="card__stat">25+ Primitives</div>
+                <p class="card__text">Production React + TypeScript components documented live in C3 Ion Storybook.</p>
+              </div>
+              <div class="card">
+                <div class="card__kicker">AI-Native UX</div>
+                <div class="card__stat">Agent Patterns</div>
+                <p class="card__text">Standardized Chain-of-Thought, Tool Call diffs, streaming chat, and citations.</p>
+              </div>
+              <div class="card">
+                <div class="card__kicker">Product Payoff</div>
+                <div class="card__stat">C3 Code Factory</div>
+                <p class="card__text">1-label Jira-to-PR autonomous bug resolution and developer Inspection Queue.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Jason Bedient · Design Director, C3 AI</span>
+            <span>Use ← / → arrows to navigate · Press N to hide Speaker Notes</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 2: THE PROBLEM
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>The Problem (1 min):</strong> 'We hit an inflection point with two problems at once. First, across our enterprise apps, AI features felt bolted on—floating chat widgets and inconsistent streaming states. Second, as we started building <strong>C3 Code</strong> and using coding agents to write our own UI, we realized coding agents can't read static Figma PDFs. When the design system lived only in static mocks, both engineers and AI agents generated fragmented, off-brand UI.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">01 · The Problem</span>
+            <span class="slide__time-pill">0:45 – 1:45</span>
+          </div>
+
+          <div class="slide__body">
+            <h2 class="slide__title">Why legacy design systems break in the age of AI agents.</h2>
+            <p class="slide__lede">
+              When AI shifts from a sidecar chatbot to an autonomous teammate executing multi-step workflows, static Figma redlines aren't enough—for users or for the builders shipping the product.
+            </p>
+
+            <div class="grid-2" style="margin-top: 8px;">
+              <div class="card" style="padding: 28px;">
+                <div class="card__kicker">Problem 1 · The User Experience</div>
+                <h3 class="card__title" style="font-size: 19px; margin-bottom: 10px;">"Bolted-On" AI &amp; Opaque Agent Actions</h3>
+                <p class="card__text" style="font-size: 14.5px; margin-bottom: 16px;">
+                  Legacy enterprise tables and forms weren't designed for streaming reasoning, live tool execution, or human-in-the-loop verification.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div class="card card--soft" style="padding: 12px 14px;">
+                    <div class="card__title" style="font-size: 13.5px; margin-bottom: 2px;">No standard for agent reasoning</div>
+                    <p class="card__text" style="font-size: 12.5px;">Every team invented their own spinners, terminal logs, or diff viewers.</p>
+                  </div>
+                  <div class="card card--soft" style="padding: 12px 14px;">
+                    <div class="card__title" style="font-size: 13.5px; margin-bottom: 2px;">Fragile streaming physics</div>
+                    <p class="card__text" style="font-size: 12.5px;">Long streaming transcripts hijacked user scroll position and lacked clear action gates.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="padding: 28px;">
+                <div class="card__kicker">Problem 2 · The Builder Workflow</div>
+                <h3 class="card__title" style="font-size: 19px; margin-bottom: 10px;">Coding Agents Can't Read Static Figma PDFs</h3>
+                <p class="card__text" style="font-size: 14.5px; margin-bottom: 16px;">
+                  As we built <strong>C3 Code</strong>—and used AI agents to build our own frontends—static documentation drifted from production React code.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div class="card card--soft" style="padding: 12px 14px;">
+                    <div class="card__title" style="font-size: 13.5px; margin-bottom: 2px;">Design-to-code drift</div>
+                    <p class="card__text" style="font-size: 12.5px;">Hand-off docs went stale immediately; engineers and agents guessed hex values and spacing.</p>
+                  </div>
+                  <div class="card card--soft" style="padding: 12px 14px;">
+                    <div class="card__title" style="font-size: 13.5px; margin-bottom: 2px;">The insight</div>
+                    <p class="card__text" style="font-size: 12.5px;">To make C3 Code great, our design system had to live <strong>in code</strong> as executable React stories + agent skill rules.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Act I · From Static Specs to an AI-First System in Code</span>
+            <span>Slide 2 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 3: ACT I — REBUILDING C3 ION
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Act I — Strategy & Architecture (1 min):</strong> 'Instead of writing another static style guide, I led the rebuild of our design system—C3 Ion—directly in React, TypeScript, and Storybook using Claude. We structured it around three layers: Foundations & 3-tier tokens, 25+ core components, and full-page AI templates so teams and agents could assemble complete views without reinventing layout patterns.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">02 · Act I — The Design System</span>
+            <span class="slide__time-pill">1:45 – 2:45</span>
+          </div>
+
+          <div class="slide__body">
+            <div class="split-60-40">
+              <div class="media-frame">
+                <div class="media-frame__bar">
+                  <div class="media-frame__dots"><span></span><span></span><span></span></div>
+                  <span>c3-storybook.vercel.app · Foundations → Components → Page Templates</span>
+                  <span>Retina 2x</span>
+                </div>
+                <div class="media-frame__content">
+                  <img src="../assets/images/case-study/docs-home.png" alt="C3 Design System Architecture" />
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <h2 class="slide__title" style="font-size: 1.95rem; margin-bottom: 4px;">
+                  Codifying the system where builders actually work.
+                </h2>
+                <p class="card__text" style="font-size: 14px; margin-bottom: 4px;">
+                  I partnered with engineering and built our documentation platform and component stories directly in code.
+                </p>
+
+                <div class="card">
+                  <div class="card__title">1. Three-Tier Token Contract</div>
+                  <p class="card__text">Every color, radius, and spacing token maps from primitive scales to semantic CSS variables (<code>--c3-style-*</code>) so light/dark and high-density states work automatically.</p>
+                </div>
+
+                <div class="card">
+                  <div class="card__title">2. AI Elevated to First-Class Navigation</div>
+                  <p class="card__text">Redesigned the enterprise <code>SideNav</code> rail so Gen AI &amp; Agent workflows lead the hierarchy rather than hiding in a bottom-right corner bubble.</p>
+                </div>
+
+                <div class="card">
+                  <div class="card__title">3. Page Templates as Executable Specs</div>
+                  <p class="card__text">Shipped full-page blueprints (<code>ListPage</code>, <code>AI Chat Session</code>, <code>Agent Workflows</code>) that engineers and C3 Code agents reference directly.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>C3 Ion Design System · Foundations, Components &amp; Templates</span>
+            <span>Slide 3 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 4: LIVE INTERACTIVE STORYBOOK
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Live Storybook Walkthrough (1.5 mins):</strong> 'Here is the live C3 Ion Storybook running right inside this slide. I can jump straight from the Overview to our <strong>AI Chat Session</strong> and <strong>Agent Workflows</strong> patterns. Notice how we standardized the exact primitives an agentic product needs: collapsible reasoning chains, tool execution cards, and structured data tables.' (Click the pills in the header bar to switch stories live!)">
+          <div class="slide__header">
+            <span class="slide__eyebrow">03 · Live System Artifact — C3 Ion Storybook</span>
+            <span class="slide__time-pill">2:45 – 4:15</span>
+          </div>
+
+          <div class="slide__body">
+            <div class="media-frame">
+              <div class="media-frame__bar">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="media-frame__dots"><span></span><span></span><span></span></div>
+                  <span>LIVE · c3-storybook.vercel.app</span>
+                </div>
+                <div class="pill-tabs" id="storybookTabs">
+                  <button type="button" class="pill-tab active" data-sb-url="https://c3-storybook.vercel.app/?path=/docs/introduction--overview">Overview</button>
+                  <button type="button" class="pill-tab" data-sb-url="https://c3-storybook.vercel.app/?path=/story/page-templates-ai-chat-session--new-session">AI Chat Session</button>
+                  <button type="button" class="pill-tab" data-sb-url="https://c3-storybook.vercel.app/?path=/docs/ai-patterns-agent-workflows--docs">Agent Workflows</button>
+                  <button type="button" class="pill-tab" data-sb-url="https://c3-storybook.vercel.app/?path=/story/page-templates-listpage--alerts-table">Alerts ListPage</button>
+                  <button type="button" class="pill-tab" data-sb-url="https://c3-storybook.vercel.app/?path=/docs/navigation-sidenav--docs">Side Nav</button>
+                </div>
+                <a href="https://c3-storybook.vercel.app/?path=/docs/introduction--overview" target="_blank" rel="noopener" style="color: var(--primary); font-family: var(--font-sans); font-weight: 600; text-decoration: none;">Open Tab ↗</a>
+              </div>
+              <div class="media-frame__content">
+                <iframe
+                  id="deckStorybookFrame"
+                  class="media-frame__iframe"
+                  src="https://c3-storybook.vercel.app/?path=/docs/introduction--overview"
+                  title="C3 Ion Storybook Live"
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Interactive Live Demo · Click the tabs above to switch Storybook stories</span>
+            <span>Slide 4 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 5: ACT II — MAKING C3 CODE BETTER
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Transition to C3 Code (1 min):</strong> 'Now let's look at how this design system directly made <strong>C3 Code</strong> a better product. In an autonomous coding tool, the hardest UX problem is <strong>trust and verification speed</strong>. If reviewing what an agent did takes longer than writing the code yourself, developers won't use it. Using our new AI-native primitives, we redesigned how C3 Code exposes its reasoning, tool calls, and diffs.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">04 · Act II — Elevating C3 Code</span>
+            <span class="slide__time-pill">4:15 – 5:15</span>
+          </div>
+
+          <div class="slide__body">
+            <div class="split-60-40">
+              <div class="media-frame">
+                <div class="media-frame__bar">
+                  <div class="media-frame__dots"><span></span><span></span><span></span></div>
+                  <span>C3 Code Session · ThinkingSteps, Tool Call Diffs &amp; Streaming Transcript</span>
+                  <span>Component Spec</span>
+                </div>
+                <div class="media-frame__content">
+                  <img src="../assets/images/case-study/ai-chat.png" alt="AI Chat Session Pattern in C3 Code" />
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <h2 class="slide__title" style="font-size: 1.9rem; margin-bottom: 4px;">
+                  Designing for trust and rapid verification in C3 Code.
+                </h2>
+                <p class="card__text" style="font-size: 14px;">
+                  We replaced opaque terminal logs with structured, scannable C3 Ion components:
+                </p>
+
+                <div class="card">
+                  <div class="card__title">Progressive Chain-of-Thought (<code>ThinkingSteps</code>)</div>
+                  <p class="card__text">Collapses multi-step agent investigation into readable milestones so engineers see <em>why</em> the agent chose a fix without noise.</p>
+                </div>
+
+                <div class="card">
+                  <div class="card__title">Structured Tool-Call Inspection</div>
+                  <p class="card__text">Dedicated cards for file reads, inline diffs, and test runs let developers audit changes in seconds.</p>
+                </div>
+
+                <div class="card">
+                  <div class="card__title"> Predictable Streaming Ergonomics</div>
+                  <p class="card__text">Sticky prompt headers and smart auto-scroll rules allow engineers to inspect earlier diffs while the agent is still streaming.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>From Design System Primitives → C3 Code Developer Experience</span>
+            <span>Slide 5 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 6: SCALING C3 CODE — AI CODE FACTORY
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Scaling C3 Code into AI Code Factory (1 min):</strong> 'Once the core C3 Code session experience and component library were solid, we asked: how do we integrate autonomous coding directly into how our entire engineering org triages bugs? We designed <strong>C3 Code AI Factory</strong>. Adding the single <code>C3 Code Factory</code> label to any Jira ticket automatically queues an agent to reproduce the bug, ship a patch, and stage a live preview for human inspection.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">05 · Product Workflow — C3 Code AI Factory</span>
+            <span class="slide__time-pill">5:15 – 6:15</span>
+          </div>
+
+          <div class="slide__body">
+            <h2 class="slide__title" style="font-size: 2rem; margin-bottom: 12px;">
+              From Jira ticket to verified fix with one <span class="jira-label">C3 Code Factory</span> label.
+            </h2>
+
+            <div class="pipeline">
+              <div class="pipeline__step">
+                <div class="pipeline__num">1</div>
+                <div class="pipeline__title">Label in Jira</div>
+                <p class="pipeline__desc">Add <span class="jira-label">C3 Code Factory</span> to any bug ticket to trigger an autonomous order.</p>
+              </div>
+              <div class="pipeline__step">
+                <div class="pipeline__num">2</div>
+                <div class="pipeline__title">Agent Queue</div>
+                <p class="pipeline__desc">Order enters <strong>Queued</strong> with Jira key, priority badge, and target repo.</p>
+              </div>
+              <div class="pipeline__step">
+                <div class="pipeline__num">3</div>
+                <div class="pipeline__title">Autonomous Fix</div>
+                <p class="pipeline__desc">C3 Code spins up a sandbox, reproduces the bug, writes tests, and opens a PR.</p>
+              </div>
+              <div class="pipeline__step">
+                <div class="pipeline__num">4</div>
+                <div class="pipeline__title">Inspection Queue</div>
+                <p class="pipeline__desc">Developer clicks <strong>Preview</strong> to verify the live sandbox build and merge.</p>
+              </div>
+            </div>
+
+            <div class="split-60-40" style="flex: 1; min-height: 0;">
+              <div class="media-frame">
+                <div class="media-frame__bar">
+                  <div class="media-frame__dots"><span></span><span></span><span></span></div>
+                  <span>QUEUED Column · Live Jira Sync &amp; Provisioning Telemetry</span>
+                </div>
+                <div class="media-frame__content">
+                  <img src="../assets/images/case-study/ai-factory-queued.jpg" alt="C3 Code Factory Queued Column" />
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="card">
+                  <div class="card__title">Built 100% with C3 Ion Components</div>
+                  <p class="card__text">Every Kanban card, priority badge (<code>P2</code>), status tag, and telemetry counter uses our standardized design system tokens.</p>
+                </div>
+                <div class="card">
+                  <div class="card__title">Transparent Run &amp; Cost Telemetry</div>
+                  <p class="card__text">Each order tracks agent attempts and token spend (<code>0 runs · $0.00</code> at queue time, updating live) so leadership can audit ROI.</p>
+                </div>
+                <div class="card">
+                  <div class="card__title">Human-in-the-Loop Inspection Gate</div>
+                  <p class="card__text">Agents never merge blindly—the <strong>Inspection</strong> column gives engineers a 1-click <strong>Preview</strong> sandbox to sign off.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>C3 Code AI Factory · Autonomous Jira-to-PR Pipeline</span>
+            <span>Slide 6 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 7: LIVE INTERACTIVE AI CODE FACTORY BOARD
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Interactive C3 Code Factory Demo (1.25 mins):</strong> 'Here is the interactive C3 Code Factory board built with the C3 Ion system. Notice how the first row shows orders moving across all 5 stages—from <strong>On hold</strong> and <strong>Queued</strong> to <strong>In process</strong>, <strong>Inspection</strong> (with the 1-click Preview button), and <strong>Complete</strong>. And if I click <strong>Analytics View</strong> in the top bar, engineering leaders get full visibility into throughput, cycle time, and cost per resolved ticket.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">06 · Live Product Demo — C3 Code Factory Board &amp; Analytics</span>
+            <span class="slide__time-pill">6:15 – 7:30</span>
+          </div>
+
+          <div class="slide__body">
+            <div class="media-frame">
+              <div class="media-frame__bar">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="media-frame__dots"><span></span><span></span><span></span></div>
+                  <span>LIVE · C3 Code AI Factory (Built with C3 Ion Design System)</span>
+                </div>
+                <div class="pill-tabs" id="factoryTabs">
+                  <button type="button" class="pill-tab active" data-factory-view="Board">Kanban Board</button>
+                  <button type="button" class="pill-tab" data-factory-view="Analytics">Analytics View</button>
+                </div>
+                <a href="ai-factory-demo.html?view=Board" target="_blank" rel="noopener" style="color: var(--primary); font-family: var(--font-sans); font-weight: 600; text-decoration: none;">Open Fullscreen ↗</a>
+              </div>
+              <div class="media-frame__content">
+                <iframe
+                  id="deckFactoryFrame"
+                  class="media-frame__iframe"
+                  src="ai-factory-demo.html?view=Board"
+                  title="C3 Code AI Factory Interactive Demo"
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Interactive Live Demo · Toggle between Kanban Board and Analytics View above</span>
+            <span>Slide 7 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 8: CLOSING THE LOOP (THE MIC-DROP MOMENT)
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>The Full-Circle Mic-Drop Moment (1 min):</strong> 'This is my favorite example of how the design system and C3 Code feed each other. Look at the video on the left: we had a real UI bug in C3 Code where scrolling up while the agent was streaming caused the chat feed to flicker and jump. We added the <code>C3 Code Factory</code> label to the Jira ticket. On the right is what the C3 Code agent posted back to Jira: it diagnosed the two root causes in <code>ChatSessionView</code> and <code>StickyPromptHeader</code>, shipped PR #2704 with 11 unit tests, <strong>and added a permanent frontend skill rule for streaming transcripts</strong> so future agents automatically follow our design system pattern.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">07 · Closing the Loop — Self-Improving Design System</span>
+            <span class="slide__time-pill">7:30 – 8:30</span>
+          </div>
+
+          <div class="slide__body">
+            <h2 class="slide__title" style="font-size: 1.9rem; margin-bottom: 12px;">
+              Full circle: C3 Code fixes its own UI bug—and codifies a new design system rule.
+            </h2>
+
+            <div class="split-50-50">
+              <!-- Left: Bug reproduction videos -->
+              <div class="media-frame">
+                <div class="media-frame__bar">
+                  <span>1. Jira Bug Videos Tagged <span class="jira-label" style="font-size: 10px; padding: 1px 6px;">C3 Code Factory</span></span>
+                  <div class="pill-tabs" id="bugVideoTabs">
+                    <button type="button" class="pill-tab active" data-video-src="../assets/images/case-study/bad_flicker_on_arrow_down.mp4">CODE-621 · Scroll Flicker</button>
+                    <button type="button" class="pill-tab" data-video-src="../assets/images/case-study/text_area_window_too_small.mp4">CODE-622 · Small Textarea</button>
+                  </div>
+                </div>
+                <div class="media-frame__content" style="background: #0a0a0a;">
+                  <video id="deckBugVideo" src="../assets/images/case-study/bad_flicker_on_arrow_down.mp4" controls playsinline muted loop></video>
+                </div>
+              </div>
+
+              <!-- Right: Agent Root Cause Assessment & PR -->
+              <div class="media-frame">
+                <div class="media-frame__bar">
+                  <span>2. Autonomous Resolution Posted by C3Code@c3.ai (PR #2704)</span>
+                  <span style="color: #15803d; font-weight: 600;">Open → In Review</span>
+                </div>
+                <div class="media-frame__content" style="background: #ffffff; padding: 8px;">
+                  <img src="../assets/images/case-study/ai-factory-agent-fix.jpg" alt="C3Code@c3.ai Jira Root Cause Assessment and Fix" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Root Cause + Fix (useAutoScrollToBottom) + 11 Unit Tests + Frontend Skill Rule</span>
+            <span>Slide 8 of 9</span>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             SLIDE 9: IMPACT & LEADERSHIP TAKEAWAYS
+             ============================================================ -->
+        <section class="slide" data-notes="<strong>Closing Summary (45s):</strong> 'To wrap up: rebuilding our design system in code didn't just clean up our UI—it became the force multiplier that made C3 Code a better product. It gave our human engineers and our coding agents a single source of truth, turned complex autonomous workflows into a scannable, trustworthy experience, and showed how I like to lead: setting system-wide product vision while getting hands-on in code and AI tooling to make it real. I'd love to dive into any questions you have.'">
+          <div class="slide__header">
+            <span class="slide__eyebrow">08 · Impact &amp; Takeaways</span>
+            <span class="slide__time-pill">8:30 – 9:15</span>
+          </div>
+
+          <div class="slide__body">
+            <h2 class="slide__title slide__title--hero" style="font-size: clamp(2rem, 3vw, 3rem);">
+              The design system is no longer just a UI kit—it's the <span class="accent">guardrail for our AI agents</span>.
+            </h2>
+            <p class="slide__lede">
+              By bridging enterprise design systems, React/Storybook architecture, and agentic workflows, we turned C3 Ion into a direct product multiplier for C3 Code.
+            </p>
+
+            <div class="grid-3" style="margin-top: 8px;">
+              <div class="card" style="padding: 24px;">
+                <div class="card__kicker">01 · Product Impact on C3 Code</div>
+                <h3 class="card__title" style="font-size: 17px; margin-bottom: 8px;">Trust &amp; Verification at Speed</h3>
+                <p class="card__text">
+                  Standardized Chain-of-Thought, tool-call diffs, and the 1-click <strong>Inspection Queue</strong> turned autonomous coding from a black box into a workflow developers trust daily.
+                </p>
+              </div>
+
+              <div class="card" style="padding: 24px;">
+                <div class="card__kicker">02 · System-as-Code Multiplier</div>
+                <h3 class="card__title" style="font-size: 17px; margin-bottom: 8px;">Built for Humans &amp; Agents</h3>
+                <p class="card__text">
+                  Codifying 3-tier tokens, 25+ primitives, and frontend skill rules in Storybook eliminated design-to-code drift and gave C3 Code agents enforceable UI guardrails.
+                </p>
+              </div>
+
+              <div class="card" style="padding: 24px;">
+                <div class="card__kicker">03 · Player-Coach Leadership</div>
+                <h3 class="card__title" style="font-size: 17px; margin-bottom: 8px;">Strategy Meets Execution</h3>
+                <p class="card__text">
+                  Combined cross-org design direction with hands-on AI prototyping in Claude, React, and Storybook—shipping production foundations rather than static decks.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__footer">
+            <span>Thank You · Q&amp;A · jasonbedient.com</span>
+            <span>Slide 9 of 9</span>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- SPEAKER NOTES DRAWER -->
+      <aside class="speaker-drawer" id="speakerDrawer">
+        <span class="speaker-drawer__tag">Speaker Notes</span>
+        <div class="speaker-drawer__content" id="speakerNotesContent"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var total = slides.length;
+      var current = 0;
+
+      var counterEl = document.getElementById('slideCounter');
+      var dotsWrap = document.getElementById('deckDots');
+      var notesDrawer = document.getElementById('speakerDrawer');
+      var notesContent = document.getElementById('speakerNotesContent');
+      var toggleNotesBtn = document.getElementById('toggleNotesBtn');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var fullscreenBtn = document.getElementById('fullscreenBtn');
+
+      // Build progress dots
+      slides.forEach(function (_, idx) {
+        var dot = document.createElement('button');
+        dot.className = 'deck-dot' + (idx === 0 ? ' active' : '');
+        dot.type = 'button';
+        dot.title = 'Go to Slide ' + (idx + 1);
+        dot.addEventListener('click', function () { goToSlide(idx); });
+        dotsWrap.appendChild(dot);
+      });
+      var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.deck-dot'));
+
+      function goToSlide(index) {
+        if (index < 0 || index >= total) return;
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = index;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        counterEl.textContent = 'Slide ' + (current + 1) + ' / ' + total;
+        notesContent.innerHTML = slides[current].getAttribute('data-notes') || '';
+        window.location.hash = 'slide-' + (current + 1);
+      }
+
+      // Initialize notes & hash
+      var initialMatch = window.location.hash.match(/slide-(\d+)/);
+      if (initialMatch) {
+        var parsed = parseInt(initialMatch[1], 10) - 1;
+        if (parsed >= 0 && parsed < total) current = parsed;
+      }
+      slides.forEach(function (s, i) {
+        s.classList.toggle('active', i === current);
+        dots[i].classList.toggle('active', i === current);
+      });
+      counterEl.textContent = 'Slide ' + (current + 1) + ' / ' + total;
+      notesContent.innerHTML = slides[current].getAttribute('data-notes') || '';
+
+      prevBtn.addEventListener('click', function () { goToSlide(current - 1); });
+      nextBtn.addEventListener('click', function () { goToSlide(current + 1); });
+
+      function toggleNotes() {
+        var hidden = notesDrawer.classList.toggle('hidden');
+        toggleNotesBtn.classList.toggle('active', !hidden);
+      }
+      toggleNotesBtn.addEventListener('click', toggleNotes);
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(function () {});
+        } else {
+          document.exitFullscreen().catch(function () {});
+        }
+      }
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+          e.preventDefault();
+          goToSlide(current + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          goToSlide(current - 1);
+        } else if (e.key === 'n' || e.key === 'N') {
+          e.preventDefault();
+          toggleNotes();
+        } else if (e.key === 'f' || e.key === 'F') {
+          e.preventDefault();
+          toggleFullscreen();
+        }
+      });
+
+      // Slide 4: Storybook switcher
+      var sbFrame = document.getElementById('deckStorybookFrame');
+      var sbButtons = document.querySelectorAll('#storybookTabs .pill-tab');
+      sbButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          sbButtons.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          sbFrame.src = btn.getAttribute('data-sb-url');
+        });
+      });
+
+      // Slide 7: AI Code Factory switcher
+      var factoryFrame = document.getElementById('deckFactoryFrame');
+      var factoryButtons = document.querySelectorAll('#factoryTabs .pill-tab');
+      factoryButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          factoryButtons.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          factoryFrame.src = 'ai-factory-demo.html?view=' + encodeURIComponent(btn.getAttribute('data-factory-view'));
+        });
+      });
+
+      // Slide 8: Bug video switcher
+      var bugVideo = document.getElementById('deckBugVideo');
+      var bugVideoButtons = document.querySelectorAll('#bugVideoTabs .pill-tab');
+      bugVideoButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          bugVideoButtons.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          bugVideo.src = btn.getAttribute('data-video-src');
+          bugVideo.play().catch(function () {});
+        });
+      });
+
+      // 8-Minute Pacing Timer
+      var timerEl = document.getElementById('deckTimer');
+      var timerSeconds = 0;
+      var timerInterval = null;
+      function formatTime(sec) {
+        var m = Math.floor(sec / 60);
+        var s = sec % 60;
+        return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+      }
+      timerEl.addEventListener('click', function () {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          timerEl.style.color = '#f59e0b';
+        } else {
+          timerEl.style.color = '#38bdf8';
+          timerInterval = setInterval(function () {
+            timerSeconds++;
+            timerEl.textContent = '⏱ ' + formatTime(timerSeconds) + ' / 08:00';
+          }, 1000);
+        }
+      });
+      timerEl.addEventListener('dblclick', function () {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = null;
+        timerSeconds = 0;
+        timerEl.style.color = '#94a3b8';
+        timerEl.textContent = '⏱ 00:00 / 08:00';
+      });
+    })();
+  </script>
+</body>
+</html>
